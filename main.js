@@ -124,9 +124,9 @@ async function processPayment() {
             return;
         }
 
-        // Create a container for inline checkout
+        // Create a container for inline checkout - use CLASS not ID
         const checkoutContainer = document.createElement('div');
-        checkoutContainer.id = 'paddle-checkout-container';
+        checkoutContainer.className = 'paddle-checkout-container';
         checkoutContainer.style.position = 'fixed';
         checkoutContainer.style.top = '50%';
         checkoutContainer.style.left = '50%';
