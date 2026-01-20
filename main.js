@@ -22,7 +22,7 @@ if (typeof Paddle !== 'undefined') {
                     setTimeout(function() {
                         Paddle.Checkout.close();
                         displayFiles();
-                    }, 750);
+                    }, 1000);
                 }
             }
         });
