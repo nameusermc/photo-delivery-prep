@@ -133,15 +133,28 @@ async function processPayment() {
         Paddle.Checkout.open({
             items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }],
             successCallback: function(data) {
-                console.log('Payment successful:', data);
+                console.log('SUCCESS CALLBACK fired:', data);
                 resolve({ success: true, data: data });
             },
             closeCallback: function(data) {
-                console.log('Checkout closed:', data);
-                if (data && data.status === 'completed') {
-                    resolve({ success: true, data: data });
+                console.log('CLOSE CALLBACK fired:', data);
+                
+                // Check multiple possible completion indicators
+                if (data) {
+                    console.log('Close data status:', data.status);
+                    console.log('Close data checkout:', data.checkout);
+                    
+                    if (data.status === 'completed' || 
+                        (data.checkout && data.checkout.status === 'completed')) {
+                        console.log('Payment completed!');
+                        resolve({ success: true, data: data });
+                    } else {
+                        console.log('Payment not completed');
+                        reject(new Error('Checkout closed without completion'));
+                    }
                 } else {
-                    reject(new Error('Checkout closed without completion'));
+                    console.log('No close data provided');
+                    reject(new Error('Checkout closed'));
                 }
             }
         });
