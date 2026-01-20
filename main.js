@@ -289,3 +289,8 @@ clearBtn.addEventListener('click', () => {
     clearUI();
 });
 document.getElementById('uploadSection').appendChild(clearBtn);
+
+
+
+
+
