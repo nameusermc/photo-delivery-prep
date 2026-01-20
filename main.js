@@ -1,7 +1,5 @@
 const FREE_LIMIT = 10;
 
-const FREE_LIMIT = 10;
-
 // Paddle Billing Configuration
 const PADDLE_CLIENT_TOKEN = 'test_2d54583158340a814b0829db719'; // Use your current token
 const PADDLE_PRICE_ID = 'pri_01kfc8wsrhhqezk6htxdy7eppe';
