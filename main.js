@@ -102,8 +102,8 @@ function displayFiles() {
     
     fileList.innerHTML = '<h3>Files to be renamed:</h3>';
     
-    // Cap preview at 25 files
-    const PREVIEW_LIMIT = 25;
+    // Cap preview at 15 files
+    const PREVIEW_LIMIT = 15;
     const filesToShow = Math.min(files.length, PREVIEW_LIMIT);
     
     for (let i = 0; i < filesToShow; i++) {
