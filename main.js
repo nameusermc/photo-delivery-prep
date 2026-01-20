@@ -117,6 +117,11 @@ function displayFiles() {
         }
         
         div.innerHTML = `${oldName} → <strong>${newName}</strong>`;
+        
+        // Click handler to show EXIF metadata
+        div.addEventListener('click', () => displayMetadata(files[i]));
+        div.style.cursor = 'pointer';
+        
         fileList.appendChild(div);
     }
     
