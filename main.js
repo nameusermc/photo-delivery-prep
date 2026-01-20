@@ -124,14 +124,38 @@ async function processPayment() {
             return;
         }
 
+        // Create a container for inline checkout
+        const checkoutContainer = document.createElement('div');
+        checkoutContainer.id = 'paddle-checkout-container';
+        checkoutContainer.style.position = 'fixed';
+        checkoutContainer.style.top = '50%';
+        checkoutContainer.style.left = '50%';
+        checkoutContainer.style.transform = 'translate(-50%, -50%)';
+        checkoutContainer.style.width = '600px';
+        checkoutContainer.style.height = '600px';
+        checkoutContainer.style.backgroundColor = 'white';
+        checkoutContainer.style.zIndex = '10000';
+        checkoutContainer.style.boxShadow = '0 0 100px rgba(0,0,0,0.5)';
+        document.body.appendChild(checkoutContainer);
+
         Paddle.Checkout.open({
             items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }],
+            settings: {
+                displayMode: 'inline',
+                frameTarget: 'paddle-checkout-container',
+                frameInitialHeight: 600,
+                frameStyle: 'width: 100%; height: 100%; border: none;'
+            },
             successCallback: function(data) {
                 console.log('Payment successful:', data);
+                document.body.removeChild(checkoutContainer);
                 resolve({ success: true, data: data });
             },
             closeCallback: function(data) {
                 console.log('Checkout closed:', data);
+                if (document.body.contains(checkoutContainer)) {
+                    document.body.removeChild(checkoutContainer);
+                }
                 if (data && data.status === 'completed') {
                     resolve({ success: true, data: data });
                 } else {
