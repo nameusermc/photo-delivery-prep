@@ -7,12 +7,20 @@ const PADDLE_PRICE_ID = 'pri_01kfc8wsrhhqezk6htxdy7eppe';
 // Initialize Paddle Billing - SET ENVIRONMENT FIRST!
 if (typeof Paddle !== 'undefined') {
     try {
-        // Set environment to sandbox
         Paddle.Environment.set('sandbox');
         console.log('Environment set to sandbox');
         
         Paddle.Initialize({
-            token: PADDLE_CLIENT_TOKEN
+            token: PADDLE_CLIENT_TOKEN,
+            eventCallback: function(data) {
+                console.log('PADDLE EVENT:', data.name, data);
+                
+                if (data.name === 'checkout.completed') {
+                    console.log('Payment completed! Unlocking...');
+                    setUnlocked(true);
+                    displayFiles();
+                }
+            }
         });
         
         console.log('Paddle initialized successfully');
@@ -122,57 +130,12 @@ function clearUI() {
     document.getElementById('downloadBtn').disabled = false;
 }
 
-async function processPayment() {
-    return new Promise((resolve, reject) => {
-        if (typeof Paddle === 'undefined') {
-            console.error('Paddle SDK not loaded');
-            reject(new Error('Payment system not available'));
-            return;
-        }
-
-        Paddle.Checkout.open({
-            items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }],
-            eventCallback: function(event) {
-                console.log('EVENT CALLBACK:', event);
-                
-                if (event.name === 'checkout.completed') {
-                    console.log('Checkout completed!');
-                    resolve({ success: true, data: event.data });
-                }
-                
-                if (event.name === 'checkout.closed') {
-                    console.log('Checkout closed');
-                    reject(new Error('Checkout closed'));
-                }
-            }
-        });
+function handleUnlock() {
+    console.log('Opening checkout...');
+    
+    Paddle.Checkout.open({
+        items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }]
     });
-}
-
-async function handleUnlock() {
-    const limitMessageDiv = document.getElementById('limitMessage');
-    const unlockBtn = document.getElementById('unlockBtn');
-    
-    unlockBtn.disabled = true;
-    limitMessageDiv.innerHTML = '<p>Processing payment...</p>';
-    
-    try {
-        const result = await processPayment();
-        
-        if (result.success) {
-            setUnlocked(true);
-            displayFiles();
-        } else {
-            limitMessageDiv.innerHTML = '<p>Payment failed. Please try again.</p>' +
-                '<button class="unlock-btn" id="unlockBtn">Unlock unlimited - $9</button>';
-            document.getElementById('unlockBtn').addEventListener('click', handleUnlock);
-        }
-    } catch (error) {
-        console.error('Payment error:', error);
-        limitMessageDiv.innerHTML = '<p>Payment cancelled or failed. Please try again.</p>' +
-            '<button class="unlock-btn" id="unlockBtn">Unlock unlimited - $9</button>';
-        document.getElementById('unlockBtn').addEventListener('click', handleUnlock);
-    }
 }
 
 async function removeMetadata(file) {
@@ -267,8 +230,3 @@ clearBtn.addEventListener('click', () => {
     clearUI();
 });
 document.getElementById('uploadSection').appendChild(clearBtn);
-
-
-
-
-
