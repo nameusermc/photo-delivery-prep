@@ -11,7 +11,6 @@
         <h1>Photo Delivery Prep</h1>
         <p>Finalize photo deliveries without re-exporting</p>
     </header>
-
     <main>
         <!-- Upload Section -->
         <section id="uploadSection">
@@ -21,7 +20,13 @@
             </label>
             <p class="helper-text">JPEG files only. Files are processed in filename order.</p>
         </section>
-
+        
+        <!-- Action Buttons Section (MOVED UP) -->
+        <section id="actionButtons">
+            <div id="limitMessage"></div>
+            <button id="downloadBtn">Download ZIP</button>
+        </section>
+        
         <!-- Rename Section -->
         <section id="renameSection">
             <label>Filename prefix (optional): 
@@ -30,27 +35,16 @@
             <label>Starting number: 
                 <input type="number" id="startNum" value="1" min="1">
             </label>
-
             <label><input type="checkbox" id="removeGPS"> Remove GPS data</label>
             <label><input type="checkbox" id="removeSerial"> Remove camera serial & software tags</label>
         </section>
-
+        
         <!-- Metadata Section -->
         <section id="metadataSection">
             <div id="fileList"></div>
             <div id="metadata"></div>
         </section>
-
-        <!-- Limit / Unlock Section -->
-        <section id="limitSection">
-            <div id="limitMessage"></div>
-        </section>
-
-        <!-- Download Section -->
-        <section id="downloadSection">
-            <button id="downloadBtn">Download ZIP</button>
-        </section>
-
+        
         <!-- Features -->
         <section id="featuresSection">
             <h2>Features</h2>
@@ -63,37 +57,30 @@
                 <li>All processing takes place locally in your browser — your files are never uploaded</li>
             </ul>
         </section>
-
+        
         <!-- FAQ -->
         <section id="faqSection">
             <h2>FAQ</h2>
             <dl>
                 <dt>Do my photos get uploaded?</dt>
                 <dd>No, all processing takes place locally in your browser.</dd>
-
                 <dt>What files are supported?</dt>
                 <dd>JPEG (.jpg / .jpeg) only.</dd>
-
                 <dt>Does this affect image quality?</dt>
                 <dd>No, the tool only renames and strips metadata as requested.</dd>
-
                 <dt>Why not rename on export?</dt>
                 <dd>Client deliveries often change after export, so this tool makes adjustments without re-exporting.</dd>
             </dl>
         </section>
     </main>
-
-<footer style="margin-top: 40px; text-align: center; font-size: 14px; opacity: 0.8;">
-  <p>
-    Photo Delivery Prep &copy; 2026 — All processing takes place locally in your browser.
-  </p>
-  <p>
-    <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
-  </p>
-</footer>
-
-
-
+    <footer style="margin-top: 40px; text-align: center; font-size: 14px; opacity: 0.8;">
+        <p>
+            Photo Delivery Prep &copy; 2026 — All processing takes place locally in your browser.
+        </p>
+        <p>
+            <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+        </p>
+    </footer>
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
