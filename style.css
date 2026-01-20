@@ -1,0 +1,212 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f6f8;
+    color: #333; /* neutral for most text */
+    padding: 20px;
+}
+
+/* Main container */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 2.2em;
+    color: #007BFF; /* headings in blue */
+    margin-bottom: 0.2em;
+}
+
+header p {
+    font-size: 1.1em;
+    color: #555; /* helper text gray */
+}
+
+/* Sections */
+section {
+    background: #fff;
+    padding: 20px 25px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Labels and Inputs */
+label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"] {
+    padding: 8px 10px;
+    margin-top: 5px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95em;
+}
+
+/* Action checkboxes */
+label[for="removeGPS"],
+label[for="removeSerial"] {
+    color: #FF6F00; /* orange for actions */
+    font-weight: bold;
+    font-size: 1.05em; /* slightly bigger */
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 15px;
+    margin-top: 8px;
+}
+
+/* Upload / File select label */
+.file-label {
+    display: inline-block;
+    padding: 12px 18px;
+    background-color: #e0e6ed;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.file-label:hover {
+    background-color: #d1d9e6;
+}
+
+.helper-text {
+    font-size: 0.9em;
+    color: #555; /* muted gray for instructions */
+    margin-top: 5px;
+}
+
+/* Download / Unlock / Clear Buttons */
+#downloadBtn, .unlock-btn, #clearBtn {
+    border: none;
+    padding: 14px 28px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: inline-block;
+}
+
+#downloadBtn {
+    background-color: #FF6F00; /* primary action */
+    color: #fff;
+}
+
+#downloadBtn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#downloadBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.unlock-btn {
+    background-color: #FF6F00;
+    color: #fff;
+}
+
+.unlock-btn:hover {
+    background-color: #e65c00;
+    transform: translateY(-2px);
+}
+
+#clearBtn {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+#clearBtn:hover {
+    transform: translateY(-2px);
+}
+
+/* File List */
+ul {
+    list-style: none;
+    margin-top: 10px;
+    padding-left: 0;
+}
+
+ul li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
+    color: #333; /* neutral text */
+}
+
+ul li:hover {
+    background-color: #f0f8ff;
+}
+
+/* Metadata */
+#metadata p {
+    margin-top: 5px;
+    color: #333; /* neutral for most fields */
+}
+
+#metadata h3, #metadata h4 {
+    color: #007BFF; /* headings in blue */
+    margin-top: 12px;
+}
+
+/* Fade-in animation for file list and metadata */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+#fileList, #metadata {
+    animation: fadeIn 0.3s ease;
+}
+
+/* FAQ styling */
+dl dt {
+    font-weight: 600;
+    margin-top: 12px;
+    color: #007BFF; /* headings blue */
+}
+
+dl dd {
+    margin-left: 20px;
+    margin-bottom: 8px;
+    color: #333; /* neutral body text */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 30px;
+}
