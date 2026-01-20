@@ -21,25 +21,47 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Call Paddle API to check for transactions
-    const response = await fetch('https://sandbox-api.paddle.com/transactions', {
-      headers: {
-        'Authorization': `Bearer ${process.env.PADDLE_API_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    });
+    const headers = {
+      'Authorization': `Bearer ${process.env.PADDLE_API_KEY}`,
+      'Content-Type': 'application/json'
+    };
 
-    if (!response.ok) {
-      throw new Error('Paddle API error');
+    // Step 1: Get customer by email
+    const customerResponse = await fetch(
+      `https://sandbox-api.paddle.com/customers?email=${encodeURIComponent(email)}`,
+      { headers }
+    );
+
+    if (!customerResponse.ok) {
+      throw new Error('Failed to fetch customer');
     }
 
-    const data = await response.json();
+    const customerData = await customerResponse.json();
     
-    // Check if this email has a completed purchase for your product
-    const hasPurchased = data.data?.some(transaction => 
-      transaction.customer_email === email &&
-      transaction.status === 'completed' &&
-      transaction.items?.some(item => item.price_id === 'pri_01kfc8wsrhhqezk6htxdy7eppe')
+    // If no customer found with this email
+    if (!customerData.data || customerData.data.length === 0) {
+      return res.status(200).json({ unlocked: false });
+    }
+
+    const customerId = customerData.data[0].id;
+
+    // Step 2: Get transactions for this customer
+    const transactionsResponse = await fetch(
+      `https://sandbox-api.paddle.com/transactions?customer_id=${customerId}&status=completed`,
+      { headers }
+    );
+
+    if (!transactionsResponse.ok) {
+      throw new Error('Failed to fetch transactions');
+    }
+
+    const transactionsData = await transactionsResponse.json();
+    
+    // Check if any transaction contains our product
+    const hasPurchased = transactionsData.data?.some(transaction =>
+      transaction.items?.some(item => 
+        item.price.id === 'pri_01kfc8wsrhhqezk6htxdy7eppe'
+      )
     );
 
     return res.status(200).json({ unlocked: hasPurchased });
