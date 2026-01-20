@@ -18,7 +18,11 @@ if (typeof Paddle !== 'undefined') {
                 if (data.name === 'checkout.completed') {
                     console.log('Payment completed! Unlocking...');
                     setUnlocked(true);
-                    displayFiles();
+                    
+                    setTimeout(function() {
+                        Paddle.Checkout.close();
+                        displayFiles();
+                    }, 1500);
                 }
             }
         });
