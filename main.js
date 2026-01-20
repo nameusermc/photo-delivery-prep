@@ -85,46 +85,73 @@ function displayMetadata(file) {
 }
 
 function displayFiles() {
-    const fileInput = document.getElementById('fileInput');
-    const files = Array.from(fileInput.files);
-    
+    const files = Array.from(document.getElementById('fileInput').files);
+    const fileList = document.getElementById('fileList');
+    const limitMessage = document.getElementById('limitMessage');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const startNum = parseInt(document.getElementById('startNum').value);
+    const prefix = document.getElementById('filenamePrefix').value.trim();
+
     if (files.length === 0) {
         clearUI();
         return;
     }
+
+    const unlocked = isUnlocked();
+    const exceededLimit = !unlocked && files.length > FREE_LIMIT;
     
-    files.sort((a, b) => a.name.localeCompare(b.name));
+    fileList.innerHTML = '<h3>Files to be renamed:</h3>';
     
-    const startNum = parseInt(document.getElementById('startNum').value) || 1;
-    const prefix = document.getElementById('filenamePrefix').value.trim();
-    const hasLockedFiles = !isUnlocked() && files.length > FREE_LIMIT;
+    // Cap preview at 25 files
+    const PREVIEW_LIMIT = 25;
+    const filesToShow = Math.min(files.length, PREVIEW_LIMIT);
     
-    let html = '<ul>';
-    files.forEach((file, index) => {
-        const newName = getNewFilename(index, startNum, prefix);
-        const isLocked = !isUnlocked() && index >= FREE_LIMIT;
-        const lockedText = isLocked ? ' [LOCKED]' : '';
-        html += '<li>' + file.name + ' => ' + newName + lockedText + '</li>';
-    });
-    html += '</ul>';
-    
-    document.getElementById('fileList').innerHTML = html;
-    
-    const limitMessageDiv = document.getElementById('limitMessage');
-    if (hasLockedFiles) {
-        limitMessageDiv.innerHTML = '<p>Free limit reached. Unlock unlimited to continue.</p>' +
-            '<button class="unlock-btn" id="unlockBtn">Unlock unlimited - $9</button>';
-        document.getElementById('downloadBtn').disabled = true;
-        document.getElementById('unlockBtn').addEventListener('click', handleUnlock);
-    } else if (isUnlocked()) {
-        limitMessageDiv.innerHTML = '<p>Unlocked! You can download all files.</p>';
-        document.getElementById('downloadBtn').disabled = false;
-    } else {
-        limitMessageDiv.innerHTML = '';
-        document.getElementById('downloadBtn').disabled = false;
+    for (let i = 0; i < filesToShow; i++) {
+        const oldName = files[i].name;
+        const newName = getNewFilename(i, startNum, prefix);
+        const div = document.createElement('div');
+        div.className = 'file-item';
+        
+        if (i >= FREE_LIMIT && exceededLimit) {
+            div.classList.add('locked');
+        }
+        
+        div.innerHTML = `${oldName} → <strong>${newName}</strong>`;
+        fileList.appendChild(div);
     }
     
-    displayMetadata(files[0]);
+    // Show summary if more files exist
+    if (files.length > PREVIEW_LIMIT) {
+        const remaining = files.length - PREVIEW_LIMIT;
+        const summaryDiv = document.createElement('div');
+        summaryDiv.className = 'file-item';
+        summaryDiv.style.fontStyle = 'italic';
+        summaryDiv.style.color = '#666';
+        summaryDiv.innerHTML = `<br>+ ${remaining} more file${remaining === 1 ? '' : 's'} will be processed correctly`;
+        fileList.appendChild(summaryDiv);
+    }
+
+    if (exceededLimit) {
+        const lockedCount = files.length - FREE_LIMIT;
+        limitMessage.innerHTML = `
+            <p><strong>Free limit: ${FREE_LIMIT} images</strong></p>
+            <p>${lockedCount} file${lockedCount === 1 ? '' : 's'} locked. Unlock unlimited for $9.</p>
+        `;
+        
+        if (!document.getElementById('unlockBtn')) {
+            const unlockBtn = document.createElement('button');
+            unlockBtn.id = 'unlockBtn';
+            unlockBtn.className = 'unlock-btn';
+            unlockBtn.textContent = 'Unlock unlimited - $9';
+            unlockBtn.addEventListener('click', handleUnlock);
+            limitMessage.appendChild(unlockBtn);
+        }
+        
+        downloadBtn.disabled = true;
+    } else {
+        limitMessage.innerHTML = '';
+        downloadBtn.disabled = false;
+    }
 }
 
 function clearUI() {
