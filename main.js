@@ -1,7 +1,7 @@
 const FREE_LIMIT = 10;
 
 // Paddle Billing Configuration
-const PADDLE_CLIENT_TOKEN = 'test_2d54583158340a814b0829db719';
+const PADDLE_CLIENT_TOKEN = 'test_c2deb3cb9b85f4b2afcd596c107';
 const PADDLE_PRICE_ID = 'pri_01kfc8wsrhhqezk6htxdy7eppe';
 
 // Initialize Paddle Billing
