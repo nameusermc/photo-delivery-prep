@@ -85,17 +85,20 @@ function displayMetadata(file) {
 }
 
 function displayFiles() {
-    const files = Array.from(document.getElementById('fileInput').files);
+    const fileInput = document.getElementById('fileInput');
+    const files = Array.from(fileInput.files);
     const fileList = document.getElementById('fileList');
     const limitMessage = document.getElementById('limitMessage');
     const downloadBtn = document.getElementById('downloadBtn');
-    const startNum = parseInt(document.getElementById('startNum').value);
+    const startNum = parseInt(document.getElementById('startNum').value) || 1;
     const prefix = document.getElementById('filenamePrefix').value.trim();
 
     if (files.length === 0) {
         clearUI();
         return;
     }
+
+    files.sort((a, b) => a.name.localeCompare(b.name));
 
     const unlocked = isUnlocked();
     const exceededLimit = !unlocked && files.length > FREE_LIMIT;
@@ -116,10 +119,12 @@ function displayFiles() {
             div.classList.add('locked');
         }
         
-        div.innerHTML = `${oldName} → <strong>${newName}</strong>`;
+        div.innerHTML = oldName + ' → <strong>' + newName + '</strong>';
         
-        // Click handler to show EXIF metadata
-        div.addEventListener('click', () => displayMetadata(files[i]));
+        // THIS IS THE KEY: Click handler to show EXIF metadata
+        div.addEventListener('click', function() {
+            displayMetadata(files[i]);
+        });
         div.style.cursor = 'pointer';
         
         fileList.appendChild(div);
@@ -132,16 +137,15 @@ function displayFiles() {
         summaryDiv.className = 'file-item';
         summaryDiv.style.fontStyle = 'italic';
         summaryDiv.style.color = '#666';
-        summaryDiv.innerHTML = `<br>+ ${remaining} more file${remaining === 1 ? '' : 's'} will be processed correctly`;
+        summaryDiv.innerHTML = '<br>+ ' + remaining + ' more file' + (remaining === 1 ? '' : 's') + ' will be processed correctly';
         fileList.appendChild(summaryDiv);
     }
 
     if (exceededLimit) {
         const lockedCount = files.length - FREE_LIMIT;
-        limitMessage.innerHTML = `
-            <p><strong>Free limit: ${FREE_LIMIT} images</strong></p>
-            <p>${lockedCount} file${lockedCount === 1 ? '' : 's'} locked. Unlock unlimited for $9.</p>
-        `;
+        limitMessage.innerHTML = 
+            '<p><strong>Free limit: ' + FREE_LIMIT + ' images</strong></p>' +
+            '<p>' + lockedCount + ' file' + (lockedCount === 1 ? '' : 's') + ' locked. Unlock unlimited for $9.</p>';
         
         if (!document.getElementById('unlockBtn')) {
             const unlockBtn = document.createElement('button');
