@@ -143,6 +143,52 @@ function displayFiles() {
             limitMessageDiv.appendChild(unlockBtn);
         }
         
+        // Add restore purchase UI
+        if (!document.getElementById('restoreContainer')) {
+            const restoreContainer = document.createElement('div');
+            restoreContainer.id = 'restoreContainer';
+            restoreContainer.style.marginTop = '20px';
+            restoreContainer.style.paddingTop = '20px';
+            restoreContainer.style.borderTop = '1px solid #ddd';
+            
+            const restoreText = document.createElement('p');
+            restoreText.textContent = 'Already purchased?';
+            restoreText.style.fontSize = '14px';
+            restoreText.style.marginBottom = '10px';
+            
+            const restoreBtn = document.createElement('button');
+            restoreBtn.id = 'restoreBtn';
+            restoreBtn.className = 'unlock-btn';
+            restoreBtn.textContent = 'Restore purchase';
+            restoreBtn.style.backgroundColor = '#6c757d';
+            restoreBtn.addEventListener('click', handleRestorePurchase);
+            
+            const emailInput = document.createElement('input');
+            emailInput.id = 'restoreEmail';
+            emailInput.type = 'email';
+            emailInput.placeholder = 'Enter your checkout email';
+            emailInput.style.display = 'none';
+            emailInput.style.width = '100%';
+            emailInput.style.maxWidth = '300px';
+            emailInput.style.padding = '10px';
+            emailInput.style.marginTop = '10px';
+            emailInput.style.marginBottom = '10px';
+            emailInput.style.border = '1px solid #ddd';
+            emailInput.style.borderRadius = '4px';
+            
+            const restoreStatus = document.createElement('p');
+            restoreStatus.id = 'restoreStatus';
+            restoreStatus.style.fontSize = '14px';
+            restoreStatus.style.marginTop = '10px';
+            
+            restoreContainer.appendChild(restoreText);
+            restoreContainer.appendChild(restoreBtn);
+            restoreContainer.appendChild(emailInput);
+            restoreContainer.appendChild(restoreStatus);
+            
+            limitMessageDiv.appendChild(restoreContainer);
+        }
+        
         document.getElementById('downloadBtn').disabled = true;
     } else {
         limitMessageDiv.innerHTML = '';
@@ -165,6 +211,72 @@ function handleUnlock() {
     
     Paddle.Checkout.open({
         items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }]
+    });
+}
+
+function handleRestorePurchase() {
+    const restoreContainer = document.getElementById('restoreContainer');
+    const restoreBtn = document.getElementById('restoreBtn');
+    const emailInput = document.getElementById('restoreEmail');
+    const restoreStatus = document.getElementById('restoreStatus');
+    
+    // First click: show email input
+    if (emailInput.style.display === 'none') {
+        emailInput.style.display = 'block';
+        restoreBtn.textContent = 'Check purchase';
+        emailInput.focus();
+        return;
+    }
+    
+    // Second click: check purchase
+    const email = emailInput.value.trim();
+    
+    if (!email) {
+        restoreStatus.textContent = 'Please enter your email address.';
+        restoreStatus.style.color = '#d32f2f';
+        return;
+    }
+    
+    // Disable button and show loading
+    restoreBtn.disabled = true;
+    restoreStatus.textContent = 'Checking your purchase…';
+    restoreStatus.style.color = '#666';
+    
+    // Call API
+    fetch('/api/check-purchase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+    })
+    .then(function(response) {
+        if (!response.ok) {
+            throw new Error('Network error');
+        }
+        return response.json();
+    })
+    .then(function(data) {
+        if (data.unlocked) {
+            // Success: unlock the app
+            setUnlocked(true);
+            restoreStatus.textContent = 'Purchase verified. Unlimited access restored.';
+            restoreStatus.style.color = '#4caf50';
+            
+            // Hide restore UI and update app
+            setTimeout(function() {
+                displayFiles();
+            }, 1500);
+        } else {
+            // No purchase found
+            restoreStatus.textContent = "We couldn't find a completed purchase for that email. Make sure you used the email from checkout.";
+            restoreStatus.style.color = '#d32f2f';
+            restoreBtn.disabled = false;
+        }
+    })
+    .catch(function(error) {
+        console.error('Restore purchase error:', error);
+        restoreStatus.textContent = 'Something went wrong. Please try again.';
+        restoreStatus.style.color = '#d32f2f';
+        restoreBtn.disabled = false;
     });
 }
 
