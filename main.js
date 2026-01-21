@@ -131,14 +131,15 @@ function displayFiles() {
     
     const limitMessageDiv = document.getElementById('limitMessage');
     if (hasLockedFiles) {
-        limitMessageDiv.innerHTML = '<p><strong>Free limit: ' + FREE_LIMIT + ' images</strong></p>' +
-            '<p>' + (files.length - FREE_LIMIT) + ' file' + (files.length - FREE_LIMIT === 1 ? '' : 's') + ' locked. Unlock unlimited for $9.</p>';
+        limitMessageDiv.innerHTML = 
+            '<p><strong>Free limit reached (10 images)</strong></p>' +
+            '<p>You can process up to 10 images for free. Unlock unlimited processing with a one-time purchase.</p>';
         
         if (!document.getElementById('unlockBtn')) {
             const unlockBtn = document.createElement('button');
             unlockBtn.id = 'unlockBtn';
             unlockBtn.className = 'unlock-btn';
-            unlockBtn.textContent = 'Unlock unlimited - $9';
+            unlockBtn.textContent = 'Unlock unlimited — $9 (one-time)';
             unlockBtn.addEventListener('click', handleUnlock);
             limitMessageDiv.appendChild(unlockBtn);
         }
@@ -152,7 +153,7 @@ function displayFiles() {
             restoreContainer.style.borderTop = '1px solid #ddd';
             
             const restoreText = document.createElement('p');
-            restoreText.textContent = 'Already purchased?';
+            restoreText.innerHTML = '<strong>Already purchased?</strong><br>Enter the email you used at checkout to restore your unlock.';
             restoreText.style.fontSize = '14px';
             restoreText.style.marginBottom = '10px';
             
@@ -181,10 +182,18 @@ function displayFiles() {
             restoreStatus.style.fontSize = '14px';
             restoreStatus.style.marginTop = '10px';
             
+            const persistenceNote = document.createElement('p');
+            persistenceNote.style.fontSize = '12px';
+            persistenceNote.style.color = '#666';
+            persistenceNote.style.marginTop = '15px';
+            persistenceNote.style.fontStyle = 'italic';
+            persistenceNote.innerHTML = 'Unlocks are stored in your browser. If you clear browser data, you can restore access using your checkout email.';
+            
             restoreContainer.appendChild(restoreText);
             restoreContainer.appendChild(restoreBtn);
             restoreContainer.appendChild(emailInput);
             restoreContainer.appendChild(restoreStatus);
+            restoreContainer.appendChild(persistenceNote);
             
             limitMessageDiv.appendChild(restoreContainer);
         }
@@ -256,18 +265,16 @@ function handleRestorePurchase() {
     })
     .then(function(data) {
         if (data.unlocked) {
-            // Success: unlock the app
-            setUnlocked(true);
-            restoreStatus.textContent = 'Purchase verified. Unlimited access restored.';
+            restoreStatus.textContent = '✅ Purchase restored. Unlimited processing unlocked.';
             restoreStatus.style.color = '#4caf50';
             
-            // Hide restore UI and update app
+            setUnlocked(true);
+            
             setTimeout(function() {
                 displayFiles();
             }, 1500);
         } else {
-            // No purchase found
-            restoreStatus.textContent = "We couldn't find a completed purchase for that email. Make sure you used the email from checkout.";
+            restoreStatus.innerHTML = "We couldn't find a completed purchase for that email.<br>Make sure you used the email from checkout.";
             restoreStatus.style.color = '#d32f2f';
             restoreBtn.disabled = false;
         }
@@ -349,7 +356,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     // Set loading state
     downloadBtn.disabled = true;
     downloadBtn.textContent = 'Processing images…';
-    statusMsg.textContent = 'This may take a moment for large batches.';
+    statusMsg.textContent = 'Large batches may take 20–30 seconds.';
     statusMsg.style.color = '#666';
 
     try {
