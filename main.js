@@ -85,63 +85,54 @@ function displayMetadata(file) {
 }
 
 function displayFiles() {
-    const files = Array.from(document.getElementById('fileInput').files);
-    const fileList = document.getElementById('fileList');
-    const limitMessage = document.getElementById('limitMessage');
-    const downloadBtn = document.getElementById('downloadBtn');
-    const startNum = parseInt(document.getElementById('startNum').value);
-    const prefix = document.getElementById('filenamePrefix').value.trim();
-
+    const fileInput = document.getElementById('fileInput');
+    const files = Array.from(fileInput.files);
+    
     if (files.length === 0) {
         clearUI();
         return;
     }
-
-    const unlocked = isUnlocked();
-    const exceededLimit = !unlocked && files.length > FREE_LIMIT;
     
-    fileList.innerHTML = '<h3>Files to be renamed:</h3>';
+    files.sort((a, b) => a.name.localeCompare(b.name));
     
-    // Cap preview at 15 files
+    const startNum = parseInt(document.getElementById('startNum').value) || 1;
+    const prefix = document.getElementById('filenamePrefix').value.trim();
+    const hasLockedFiles = !isUnlocked() && files.length > FREE_LIMIT;
+    
+    // Build file list with 15 file preview limit
     const PREVIEW_LIMIT = 15;
     const filesToShow = Math.min(files.length, PREVIEW_LIMIT);
     
+    let html = '<h3>Files to be renamed:</h3><ul>';
     for (let i = 0; i < filesToShow; i++) {
-        const oldName = files[i].name;
         const newName = getNewFilename(i, startNum, prefix);
-        const div = document.createElement('div');
-        div.className = 'file-item';
-        
-        if (i >= FREE_LIMIT && exceededLimit) {
-            div.classList.add('locked');
-        }
-        
-        div.innerHTML = `${oldName} → <strong>${newName}</strong>`;
-        
-        // Click handler to show EXIF metadata
-        div.addEventListener('click', () => displayMetadata(files[i]));
-        div.style.cursor = 'pointer';
-        
-        fileList.appendChild(div);
+        const isLocked = !isUnlocked() && i >= FREE_LIMIT;
+        const lockedText = isLocked ? ' [LOCKED]' : '';
+        html += '<li style="cursor: pointer;" data-index="' + i + '">' + files[i].name + ' => ' + newName + lockedText + '</li>';
     }
+    html += '</ul>';
     
     // Show summary if more files exist
     if (files.length > PREVIEW_LIMIT) {
         const remaining = files.length - PREVIEW_LIMIT;
-        const summaryDiv = document.createElement('div');
-        summaryDiv.className = 'file-item';
-        summaryDiv.style.fontStyle = 'italic';
-        summaryDiv.style.color = '#666';
-        summaryDiv.innerHTML = `<br>+ ${remaining} more file${remaining === 1 ? '' : 's'} will be processed correctly`;
-        fileList.appendChild(summaryDiv);
+        html += '<p style="font-style: italic; color: #666;">+ ' + remaining + ' more file' + (remaining === 1 ? '' : 's') + ' will be processed correctly</p>';
     }
-
-    if (exceededLimit) {
-        const lockedCount = files.length - FREE_LIMIT;
-        limitMessage.innerHTML = `
-            <p><strong>Free limit: ${FREE_LIMIT} images</strong></p>
-            <p>${lockedCount} file${lockedCount === 1 ? '' : 's'} locked. Unlock unlimited for $9.</p>
-        `;
+    
+    document.getElementById('fileList').innerHTML = html;
+    
+    // Add click handlers to list items
+    const listItems = document.querySelectorAll('#fileList li[data-index]');
+    listItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            const index = parseInt(this.getAttribute('data-index'));
+            displayMetadata(files[index]);
+        });
+    });
+    
+    const limitMessageDiv = document.getElementById('limitMessage');
+    if (hasLockedFiles) {
+        limitMessageDiv.innerHTML = '<p><strong>Free limit: ' + FREE_LIMIT + ' images</strong></p>' +
+            '<p>' + (files.length - FREE_LIMIT) + ' file' + (files.length - FREE_LIMIT === 1 ? '' : 's') + ' locked. Unlock unlimited for $9.</p>';
         
         if (!document.getElementById('unlockBtn')) {
             const unlockBtn = document.createElement('button');
@@ -149,14 +140,17 @@ function displayFiles() {
             unlockBtn.className = 'unlock-btn';
             unlockBtn.textContent = 'Unlock unlimited - $9';
             unlockBtn.addEventListener('click', handleUnlock);
-            limitMessage.appendChild(unlockBtn);
+            limitMessageDiv.appendChild(unlockBtn);
         }
         
-        downloadBtn.disabled = true;
+        document.getElementById('downloadBtn').disabled = true;
     } else {
-        limitMessage.innerHTML = '';
-        downloadBtn.disabled = false;
+        limitMessageDiv.innerHTML = '';
+        document.getElementById('downloadBtn').disabled = false;
     }
+    
+    // CRITICAL: Auto-display first file's metadata
+    displayMetadata(files[0]);
 }
 
 function clearUI() {
