@@ -332,33 +332,67 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         return;
     }
 
-    files.sort((a, b) => a.name.localeCompare(b.name));
-
-    const startNum = parseInt(document.getElementById('startNum').value) || 1;
-    const prefix = document.getElementById('filenamePrefix').value.trim();
-    const removeGPS = document.getElementById('removeGPS').checked;
-    const removeSerial = document.getElementById('removeSerial').checked;
+    const downloadBtn = document.getElementById('downloadBtn');
+    const originalText = downloadBtn.textContent;
     
-    const filesToProcess = isUnlocked() ? files : files.slice(0, FREE_LIMIT);
-
-    const zip = new JSZip();
-
-    for (let i = 0; i < filesToProcess.length; i++) {
-        const newName = getNewFilename(i, startNum, prefix);
-        
-        if (removeGPS || removeSerial) {
-            const cleanedFile = await removeMetadata(filesToProcess[i]);
-            zip.file(newName, cleanedFile);
-        } else {
-            zip.file(newName, filesToProcess[i]);
-        }
+    // Create status message element if it doesn't exist
+    let statusMsg = document.getElementById('downloadStatus');
+    if (!statusMsg) {
+        statusMsg = document.createElement('p');
+        statusMsg.id = 'downloadStatus';
+        statusMsg.style.fontSize = '14px';
+        statusMsg.style.marginTop = '10px';
+        statusMsg.style.color = '#666';
+        downloadBtn.parentNode.appendChild(statusMsg);
     }
+    
+    // Set loading state
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = 'Processing images…';
+    statusMsg.textContent = 'This may take a moment for large batches.';
+    statusMsg.style.color = '#666';
 
-    const blob = await zip.generateAsync({ type: 'blob' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'images.zip';
-    link.click();
+    try {
+        files.sort((a, b) => a.name.localeCompare(b.name));
+
+        const startNum = parseInt(document.getElementById('startNum').value) || 1;
+        const prefix = document.getElementById('filenamePrefix').value.trim();
+        const removeGPS = document.getElementById('removeGPS').checked;
+        const removeSerial = document.getElementById('removeSerial').checked;
+        
+        const filesToProcess = isUnlocked() ? files : files.slice(0, FREE_LIMIT);
+
+        const zip = new JSZip();
+
+        for (let i = 0; i < filesToProcess.length; i++) {
+            const newName = getNewFilename(i, startNum, prefix);
+            
+            if (removeGPS || removeSerial) {
+                const cleanedFile = await removeMetadata(filesToProcess[i]);
+                zip.file(newName, cleanedFile);
+            } else {
+                zip.file(newName, filesToProcess[i]);
+            }
+        }
+
+        const blob = await zip.generateAsync({ type: 'blob' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'images.zip';
+        link.click();
+        
+        // Clear status message on success
+        statusMsg.textContent = '';
+        
+    } catch (error) {
+        console.error('ZIP generation error:', error);
+        statusMsg.textContent = 'Failed to create ZIP. Please try again.';
+        statusMsg.style.color = '#d32f2f';
+    } finally {
+        // Always restore button state
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = originalText;
+    }
 });
 
 const clearBtn = document.createElement('button');
