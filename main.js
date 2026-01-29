@@ -1,14 +1,14 @@
 const FREE_LIMIT = 10;
 
 // Paddle Billing Configuration
-const PADDLE_CLIENT_TOKEN = 'test_c2deb3cb9b85f4b2afcd596c107';
-const PADDLE_PRICE_ID = 'pri_01kfc8wsrhhqezk6htxdy7eppe';
+const PADDLE_CLIENT_TOKEN = 'live_2f1290ddf0609ffc67fcc46679b';
+const PADDLE_PRICE_ID = 'pri_01kg5n2jrb4xwpgehfhrpqjm0y';
 
 // Initialize Paddle Billing - SET ENVIRONMENT FIRST!
 if (typeof Paddle !== 'undefined') {
     try {
-        Paddle.Environment.set('sandbox');
-        console.log('Environment set to sandbox');
+        Paddle.Environment.set('production');
+        console.log('Environment set to production');
         
         Paddle.Initialize({
             token: PADDLE_CLIENT_TOKEN,
@@ -99,112 +99,31 @@ function displayFiles() {
     const prefix = document.getElementById('filenamePrefix').value.trim();
     const hasLockedFiles = !isUnlocked() && files.length > FREE_LIMIT;
     
-    // Build file list with 15 file preview limit
-    const PREVIEW_LIMIT = 15;
-    const filesToShow = Math.min(files.length, PREVIEW_LIMIT);
-    
-    let html = '<h3>Files to be renamed:</h3><ul>';
-    for (let i = 0; i < filesToShow; i++) {
-        const newName = getNewFilename(i, startNum, prefix);
-        const isLocked = !isUnlocked() && i >= FREE_LIMIT;
+    let html = '<ul>';
+    files.forEach((file, index) => {
+        const newName = getNewFilename(index, startNum, prefix);
+        const isLocked = !isUnlocked() && index >= FREE_LIMIT;
         const lockedText = isLocked ? ' [LOCKED]' : '';
-        html += '<li style="cursor: pointer;" data-index="' + i + '">' + files[i].name + ' => ' + newName + lockedText + '</li>';
-    }
+        html += '<li>' + file.name + ' => ' + newName + lockedText + '</li>';
+    });
     html += '</ul>';
-    
-    // Show summary if more files exist
-    if (files.length > PREVIEW_LIMIT) {
-        const remaining = files.length - PREVIEW_LIMIT;
-        html += '<p style="font-style: italic; color: #666;">+ ' + remaining + ' more file' + (remaining === 1 ? '' : 's') + ' will be processed correctly</p>';
-    }
     
     document.getElementById('fileList').innerHTML = html;
     
-    // Add click handlers to list items
-    const listItems = document.querySelectorAll('#fileList li[data-index]');
-    listItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-            const index = parseInt(this.getAttribute('data-index'));
-            displayMetadata(files[index]);
-        });
-    });
-    
     const limitMessageDiv = document.getElementById('limitMessage');
     if (hasLockedFiles) {
-        limitMessageDiv.innerHTML = 
-            '<p><strong>Free limit reached (10 images)</strong></p>' +
-            '<p>You can process up to 10 images for free. Unlock unlimited processing with a one-time purchase.</p>';
-        
-        if (!document.getElementById('unlockBtn')) {
-            const unlockBtn = document.createElement('button');
-            unlockBtn.id = 'unlockBtn';
-            unlockBtn.className = 'unlock-btn';
-            unlockBtn.textContent = 'Unlock unlimited — $9 (one-time)';
-            unlockBtn.addEventListener('click', handleUnlock);
-            limitMessageDiv.appendChild(unlockBtn);
-        }
-        
-        // Add restore purchase UI
-        if (!document.getElementById('restoreContainer')) {
-            const restoreContainer = document.createElement('div');
-            restoreContainer.id = 'restoreContainer';
-            restoreContainer.style.marginTop = '20px';
-            restoreContainer.style.paddingTop = '20px';
-            restoreContainer.style.borderTop = '1px solid #ddd';
-            
-            const restoreText = document.createElement('p');
-            restoreText.innerHTML = '<strong>Already purchased?</strong><br>Enter the email you used at checkout to restore your unlock.';
-            restoreText.style.fontSize = '14px';
-            restoreText.style.marginBottom = '10px';
-            
-            const restoreBtn = document.createElement('button');
-            restoreBtn.id = 'restoreBtn';
-            restoreBtn.className = 'unlock-btn';
-            restoreBtn.textContent = 'Restore purchase';
-            restoreBtn.style.backgroundColor = '#6c757d';
-            restoreBtn.addEventListener('click', handleRestorePurchase);
-            
-            const emailInput = document.createElement('input');
-            emailInput.id = 'restoreEmail';
-            emailInput.type = 'email';
-            emailInput.placeholder = 'Enter your checkout email';
-            emailInput.style.display = 'none';
-            emailInput.style.width = '100%';
-            emailInput.style.maxWidth = '300px';
-            emailInput.style.padding = '10px';
-            emailInput.style.marginTop = '10px';
-            emailInput.style.marginBottom = '10px';
-            emailInput.style.border = '1px solid #ddd';
-            emailInput.style.borderRadius = '4px';
-            
-            const restoreStatus = document.createElement('p');
-            restoreStatus.id = 'restoreStatus';
-            restoreStatus.style.fontSize = '14px';
-            restoreStatus.style.marginTop = '10px';
-            
-            const persistenceNote = document.createElement('p');
-            persistenceNote.style.fontSize = '12px';
-            persistenceNote.style.color = '#666';
-            persistenceNote.style.marginTop = '15px';
-            persistenceNote.style.fontStyle = 'italic';
-            persistenceNote.innerHTML = 'Unlocks are stored in your browser. If you clear browser data, you can restore access using your checkout email.';
-            
-            restoreContainer.appendChild(restoreText);
-            restoreContainer.appendChild(restoreBtn);
-            restoreContainer.appendChild(emailInput);
-            restoreContainer.appendChild(restoreStatus);
-            restoreContainer.appendChild(persistenceNote);
-            
-            limitMessageDiv.appendChild(restoreContainer);
-        }
-        
+        limitMessageDiv.innerHTML = '<p>Free limit reached. Unlock unlimited to continue.</p>' +
+            '<button class="unlock-btn" id="unlockBtn">Unlock unlimited - $9</button>';
         document.getElementById('downloadBtn').disabled = true;
+        document.getElementById('unlockBtn').addEventListener('click', handleUnlock);
+    } else if (isUnlocked()) {
+        limitMessageDiv.innerHTML = '<p>Unlocked! You can download all files.</p>';
+        document.getElementById('downloadBtn').disabled = false;
     } else {
         limitMessageDiv.innerHTML = '';
         document.getElementById('downloadBtn').disabled = false;
     }
     
-    // CRITICAL: Auto-display first file's metadata
     displayMetadata(files[0]);
 }
 
@@ -220,70 +139,6 @@ function handleUnlock() {
     
     Paddle.Checkout.open({
         items: [{ priceId: PADDLE_PRICE_ID, quantity: 1 }]
-    });
-}
-
-function handleRestorePurchase() {
-    const restoreContainer = document.getElementById('restoreContainer');
-    const restoreBtn = document.getElementById('restoreBtn');
-    const emailInput = document.getElementById('restoreEmail');
-    const restoreStatus = document.getElementById('restoreStatus');
-    
-    // First click: show email input
-    if (emailInput.style.display === 'none') {
-        emailInput.style.display = 'block';
-        restoreBtn.textContent = 'Check purchase';
-        emailInput.focus();
-        return;
-    }
-    
-    // Second click: check purchase
-    const email = emailInput.value.trim();
-    
-    if (!email) {
-        restoreStatus.textContent = 'Please enter your email address.';
-        restoreStatus.style.color = '#d32f2f';
-        return;
-    }
-    
-    // Disable button and show loading
-    restoreBtn.disabled = true;
-    restoreStatus.textContent = 'Checking your purchase…';
-    restoreStatus.style.color = '#666';
-    
-    // Call API
-    fetch('/api/check-purchase', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
-    })
-    .then(function(response) {
-        if (!response.ok) {
-            throw new Error('Network error');
-        }
-        return response.json();
-    })
-    .then(function(data) {
-        if (data.unlocked) {
-            restoreStatus.textContent = '✅ Purchase restored. Unlimited processing unlocked.';
-            restoreStatus.style.color = '#4caf50';
-            
-            setUnlocked(true);
-            
-            setTimeout(function() {
-                displayFiles();
-            }, 1500);
-        } else {
-            restoreStatus.innerHTML = "We couldn't find a completed purchase for that email.<br>Make sure you used the email from checkout.";
-            restoreStatus.style.color = '#d32f2f';
-            restoreBtn.disabled = false;
-        }
-    })
-    .catch(function(error) {
-        console.error('Restore purchase error:', error);
-        restoreStatus.textContent = 'Something went wrong. Please try again.';
-        restoreStatus.style.color = '#d32f2f';
-        restoreBtn.disabled = false;
     });
 }
 
@@ -339,67 +194,33 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
         return;
     }
 
-    const downloadBtn = document.getElementById('downloadBtn');
-    const originalText = downloadBtn.textContent;
-    
-    // Create status message element if it doesn't exist
-    let statusMsg = document.getElementById('downloadStatus');
-    if (!statusMsg) {
-        statusMsg = document.createElement('p');
-        statusMsg.id = 'downloadStatus';
-        statusMsg.style.fontSize = '14px';
-        statusMsg.style.marginTop = '10px';
-        statusMsg.style.color = '#666';
-        downloadBtn.parentNode.appendChild(statusMsg);
-    }
-    
-    // Set loading state
-    downloadBtn.disabled = true;
-    downloadBtn.textContent = 'Processing images…';
-    statusMsg.textContent = 'Large batches may take 20–30 seconds.';
-    statusMsg.style.color = '#666';
+    files.sort((a, b) => a.name.localeCompare(b.name));
 
-    try {
-        files.sort((a, b) => a.name.localeCompare(b.name));
+    const startNum = parseInt(document.getElementById('startNum').value) || 1;
+    const prefix = document.getElementById('filenamePrefix').value.trim();
+    const removeGPS = document.getElementById('removeGPS').checked;
+    const removeSerial = document.getElementById('removeSerial').checked;
+    
+    const filesToProcess = isUnlocked() ? files : files.slice(0, FREE_LIMIT);
 
-        const startNum = parseInt(document.getElementById('startNum').value) || 1;
-        const prefix = document.getElementById('filenamePrefix').value.trim();
-        const removeGPS = document.getElementById('removeGPS').checked;
-        const removeSerial = document.getElementById('removeSerial').checked;
+    const zip = new JSZip();
+
+    for (let i = 0; i < filesToProcess.length; i++) {
+        const newName = getNewFilename(i, startNum, prefix);
         
-        const filesToProcess = isUnlocked() ? files : files.slice(0, FREE_LIMIT);
-
-        const zip = new JSZip();
-
-        for (let i = 0; i < filesToProcess.length; i++) {
-            const newName = getNewFilename(i, startNum, prefix);
-            
-            if (removeGPS || removeSerial) {
-                const cleanedFile = await removeMetadata(filesToProcess[i]);
-                zip.file(newName, cleanedFile);
-            } else {
-                zip.file(newName, filesToProcess[i]);
-            }
+        if (removeGPS || removeSerial) {
+            const cleanedFile = await removeMetadata(filesToProcess[i]);
+            zip.file(newName, cleanedFile);
+        } else {
+            zip.file(newName, filesToProcess[i]);
         }
-
-        const blob = await zip.generateAsync({ type: 'blob' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'images.zip';
-        link.click();
-        
-        // Clear status message on success
-        statusMsg.textContent = '';
-        
-    } catch (error) {
-        console.error('ZIP generation error:', error);
-        statusMsg.textContent = 'Failed to create ZIP. Please try again.';
-        statusMsg.style.color = '#d32f2f';
-    } finally {
-        // Always restore button state
-        downloadBtn.disabled = false;
-        downloadBtn.textContent = originalText;
     }
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'images.zip';
+    link.click();
 });
 
 const clearBtn = document.createElement('button');
