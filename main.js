@@ -113,7 +113,7 @@ function displayFiles() {
     const limitMessageDiv = document.getElementById('limitMessage');
     if (hasLockedFiles) {
         limitMessageDiv.innerHTML = '<p>Free limit reached. Unlock unlimited to continue.</p>' +
-            '<button class="unlock-btn" id="unlockBtn">Unlock unlimited - $9</button>';
+            '<button class="unlock-btn" id="unlockBtn">Unlock unlimited - $9.99</button>';
         document.getElementById('downloadBtn').disabled = true;
         document.getElementById('unlockBtn').addEventListener('click', handleUnlock);
     } else if (isUnlocked()) {
