@@ -1,0 +1,92 @@
+Incident Report
+Project: PhotoDeliveryPrep
+Domain: photodeliveryprep.com
+Hosting: Vercel
+Date Opened: 2026-01-22
+Date Resolved: 2026-01-24
+
+Status: Closed — Root Cause Identified
+Severity: Medium (ISP-specific access failure)
+
+1. Incident Summary
+Users on certain home internet providers (notably Comcast and Spectrum) were unable to load photodeliveryprep.com. Errors included SSL protocol failures and “potentially harmful site” warnings. The site loaded successfully on cellular data, other ISPs, and via Vercel preview URLs.
+After extensive testing, the issue was confirmed not to be caused by hosting, DNS, SSL configuration, devices, browsers, or local networking equipment. The root cause was identified as ISP-level reputation blocking due to recent domain registration.
+
+2. Impact
+Site inaccessible on:
+Comcast (Xfinity) home networks
+Spectrum home networks
+Site accessible on:
+Cellular data
+Cox ISP
+Vercel preview URLs
+No data loss
+No security compromise
+No misconfiguration detected
+
+3. Symptoms Observed
+ERR_SSL_PROTOCOL_ERROR on some devices
+“Potentially harmful site” warnings on Comcast
+Inconsistent behavior depending on ISP
+Same behavior across:
+Mac and PC
+Mobile and desktop
+Multiple browsers
+
+4. Troubleshooting & Tests Performed
+Network & Device Testing
+Tested on multiple devices (Mac, PC, phone)
+Tested on multiple networks (home Wi-Fi, cellular, other ISPs)
+Restarted modem and router multiple times
+Confirmed no VPN in use
+DNS & Browser Testing
+Changed DNS to Google (8.8.8.8 / 8.8.4.4)
+Flushed DNS cache
+Tested across multiple browsers
+Enabled DNS over HTTPS (DoH) in Firefox
+Hosting & Security Verification
+Verified Vercel deployment health
+Confirmed SSL certificates valid and correctly provisioned
+Checked VirusTotal (0/92 vendors flagged)
+Checked Google Safe Browsing (no listing)
+Checked alphaMountain.ai (flagged “Suspicious” due solely to domain age)
+
+5. Root Cause Analysis
+Root Cause:
+The domain photodeliveryprep.com was registered approximately 2 days prior to launch.
+Many ISPs (including Comcast and Spectrum) apply temporary reputation-based blocking or warnings to newly registered domains as an anti-phishing and anti-malware measure.
+This block is:
+Automatic
+ISP-controlled
+Based primarily on domain age
+Independent of hosting provider or site content
+
+6. Supporting Evidence
+VirusTotal: Clean (0/92 detections)
+alphaMountain.ai: Suspicious due to age only
+Google Safe Browsing: No data / not flagged
+Site loads immediately when DNS-over-HTTPS is enabled
+Site loads on unaffected ISPs and cellular networks
+Vercel preview URLs load universally
+
+7. Resolution
+No technical changes required.
+Resolution:
+Allow the domain to age 7–14 days to clear ISP reputation filters automatically.
+
+8. Temporary Workarounds
+Use Vercel preview URLs for affected users
+Access site via cellular data
+Enable DNS-over-HTTPS in supported browsers (advanced users)
+
+9. Preventative Actions Taken
+Registered future project domain (steampagecheck.com) early to allow domain aging before launch
+Documented ISP domain-age behavior for future launches
+
+10. Lessons Learned
+Domain age can impact accessibility independently of DNS/SSL correctness
+Comcast and Spectrum apply aggressive early-domain reputation filtering
+Register domains at least 2 weeks before launch when possible
+
+Incident Owner: Michael Cardin
+Final Status: Closed

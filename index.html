@@ -3,87 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Delivery Prep</title>
+    <title>Photo Delivery Prep — Rename, Clean &amp; ZIP Photos &amp; Videos for Client Delivery</title>
+    <meta name="description" content="Batch rename, strip EXIF metadata, and ZIP photos and videos for client delivery. Supports JPEG, PNG, TIFF, RAW, MP4, MOV and more. 100% browser-based — your files never leave your device.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>Photo Delivery Prep</h1>
-        <p>Finalize photo deliveries without re-exporting</p>
+        <p>Rename, clean metadata, and package files for client delivery — all in your browser</p>
     </header>
     <main>
         <!-- Upload Section -->
         <section id="uploadSection">
             <label class="file-label">
-                Choose JPEG files
-                <input type="file" id="fileInput" accept="image/jpeg" multiple>
+                Choose files
+                <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.tiff,.tif,.webp,.bmp,.gif,.heic,.heif,.cr2,.cr3,.nef,.arw,.dng,.orf,.raf,.rw2,.mp4,.mov,.avi,.mkv,.wmv,.webm" multiple>
             </label>
-            <p class="helper-text">JPEG files only. Files are processed in filename order.</p>
+            <p class="helper-text">Images, RAW files, and videos. Files are processed in filename order.</p>
         </section>
-        
-        <!-- Action Buttons Section (MOVED UP) -->
+
+        <!-- Action Buttons Section -->
         <section id="actionButtons">
             <div id="limitMessage"></div>
             <button id="downloadBtn">Download ZIP</button>
         </section>
-        
+
         <!-- Rename Section -->
         <section id="renameSection">
-            <label>Filename prefix (optional): 
+            <label>Filename prefix (optional):
                 <input type="text" id="filenamePrefix" placeholder="Optional prefix">
             </label>
-            <label>Starting number: 
+            <label>Starting number:
                 <input type="number" id="startNum" value="1" min="1">
             </label>
-            <label><input type="checkbox" id="removeGPS"> Remove GPS data</label>
-            <label><input type="checkbox" id="removeSerial"> Remove camera serial & software tags</label>
+            <div id="exifOptions">
+                <label><input type="checkbox" id="removeGPS"> Remove GPS data <span class="helper-text">(JPEG only)</span></label>
+                <label><input type="checkbox" id="removeSerial"> Remove camera serial &amp; software tags <span class="helper-text">(JPEG only)</span></label>
+            </div>
         </section>
-        
-        <!-- Metadata Section -->
+
+        <!-- File List & Metadata Section -->
         <section id="metadataSection">
             <div id="fileList"></div>
             <div id="metadata"></div>
         </section>
-        
+
+        <!-- How It Works -->
+        <section id="howItWorks">
+            <h2>How It Works</h2>
+            <ol>
+                <li><strong>Select your files</strong> — drag or choose JPEGs, PNGs, TIFFs, RAW files, or videos from your computer.</li>
+                <li><strong>Set a naming scheme</strong> — add an optional prefix and choose a starting number. The tool renumbers files in alphabetical order.</li>
+                <li><strong>Choose metadata options</strong> — for JPEG files, you can strip GPS coordinates, camera serial numbers, and software tags before delivery.</li>
+                <li><strong>Download the ZIP</strong> — one click produces a ready-to-send package with your renamed (and optionally cleaned) files.</li>
+            </ol>
+            <p>Everything runs locally in your browser using JavaScript. Your files are never uploaded to a server.</p>
+        </section>
+
         <!-- Features -->
         <section id="featuresSection">
             <h2>Features</h2>
             <ul>
-                <li>Renumber and rename files after export with optional prefix</li>
-                <li>Preview EXIF metadata including capture date, camera model, copyright, serial & software tags</li>
-                <li>Remove sensitive EXIF data (GPS, serial numbers, software tags) without altering image pixels</li>
-                <li>Batch process JPEGs into a ready-to-send ZIP</li>
-                <li>Free tier: 10 images, unlimited with one-time $9.99 unlock</li>
-                <li>All processing takes place locally in your browser — your files are never uploaded</li>
+                <li>Batch rename and renumber files after export with an optional prefix</li>
+                <li>Supports JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC, RAW (CR2, NEF, ARW, DNG, and more), and video (MP4, MOV, AVI, MKV)</li>
+                <li>Preview EXIF metadata on JPEG files — capture date, camera model, copyright, GPS, serial numbers, and software tags</li>
+                <li>Strip sensitive EXIF data (GPS, serial numbers, software tags) from JPEGs without altering image pixels</li>
+                <li>Package everything into a ready-to-send ZIP</li>
+                <li>Free tier processes up to 10 files — unlock unlimited with a one-time $9.99 payment</li>
+                <li>100% client-side — your files are never uploaded or stored on a server</li>
             </ul>
         </section>
-        
+
+        <!-- Supported Formats -->
+        <section id="formatsSection">
+            <h2>Supported File Formats</h2>
+            <div class="formats-grid">
+                <div>
+                    <h3>Images</h3>
+                    <p>JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC / HEIF</p>
+                </div>
+                <div>
+                    <h3>RAW Files</h3>
+                    <p>Canon CR2 / CR3, Nikon NEF, Sony ARW, Adobe DNG, Olympus ORF, Fuji RAF, Panasonic RW2</p>
+                </div>
+                <div>
+                    <h3>Video</h3>
+                    <p>MP4, MOV, AVI, MKV, WMV, WebM</p>
+                </div>
+            </div>
+            <p class="helper-text">EXIF metadata preview and removal is available for JPEG files. All other formats are renamed and packaged as-is.</p>
+        </section>
+
         <!-- FAQ -->
         <section id="faqSection">
             <h2>FAQ</h2>
             <dl>
-                <dt>Do my photos get uploaded?</dt>
-                <dd>No, all processing takes place locally in your browser.</dd>
-                <dt>What files are supported?</dt>
-                <dd>JPEG (.jpg / .jpeg) only.</dd>
-                <dt>Does this affect image quality?</dt>
-                <dd>No, the tool only renames and strips metadata as requested.</dd>
+                <dt>Do my files get uploaded?</dt>
+                <dd>No. All processing happens locally in your browser. Your files never leave your device.</dd>
+                <dt>What file types are supported?</dt>
+                <dd>JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC, common RAW formats (CR2, NEF, ARW, DNG, etc.), and video files (MP4, MOV, AVI, MKV, and more).</dd>
+                <dt>Does this affect image or video quality?</dt>
+                <dd>No. The tool only renames files and optionally strips EXIF metadata from JPEGs. Pixel data and video streams are never modified.</dd>
                 <dt>Why not rename on export?</dt>
-                <dd>Client deliveries often change after export, so this tool makes adjustments without re-exporting.</dd>
+                <dd>Client deliveries often change after export — selects get revised, sequences shift. This tool lets you adjust naming and strip metadata without re-exporting from Lightroom, Capture One, or your NLE.</dd>
+                <dt>Can I process RAW and video files?</dt>
+                <dd>Yes. RAW and video files are renamed and packaged into the ZIP. EXIF metadata stripping is only available for JPEG files since RAW and video formats use proprietary metadata structures.</dd>
+                <dt>What does "Unlock Unlimited" mean?</dt>
+                <dd>Free users can process up to 10 files per batch. A one-time $9.99 payment removes this limit permanently. No subscription, no account required.</dd>
+                <dt>I already paid but my unlock is gone. What do I do?</dt>
+                <dd>Your unlock is stored in your browser. If you cleared your browser data or switched devices, use the "Restore Purchase" link that appears when you hit the free limit. Enter the email you used at checkout and your unlock will be restored.</dd>
             </dl>
         </section>
     </main>
-      <footer style="margin-top: 40px; text-align: center; font-size: 14px; opacity: 0.8;">
-      <p>
-        Photo Delivery Prep &copy; 2026 — All processing takes place locally in your browser. No images are uploaded or stored on a server.
-      </p>
-      <p>
-        <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refunds.html">Refunds</a> · <a href="price.html">Pricing</a>
-      </p>
+
+    <footer>
+        <p>Photo Delivery Prep &copy; 2026 — All processing takes place locally in your browser. No files are uploaded or stored on a server.</p>
+        <p>
+            <a href="privacy.html">Privacy</a> &middot;
+            <a href="terms.html">Terms</a> &middot;
+            <a href="refunds.html">Refunds</a> &middot;
+            <a href="price.html">Pricing</a>
+        </p>
     </footer>
+
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
-    <script src="main.js?v=3"></script>
+    <script src="main.js?v=4"></script>
 </body>
 </html>

@@ -1,15 +1,13 @@
 export default async function handler(req, res) {
-  // Add CORS headers
+  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Only accept POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -26,9 +24,9 @@ export default async function handler(req, res) {
       'Content-Type': 'application/json'
     };
 
-    // Step 1: Get customer by email
+    // Step 1: Look up customer by email
     const customerResponse = await fetch(
-      `https://sandbox-api.paddle.com/customers?email=${encodeURIComponent(email)}`,
+      `https://api.paddle.com/customers?email=${encodeURIComponent(email)}`,
       { headers }
     );
 
@@ -37,17 +35,16 @@ export default async function handler(req, res) {
     }
 
     const customerData = await customerResponse.json();
-    
-    // If no customer found with this email
+
     if (!customerData.data || customerData.data.length === 0) {
       return res.status(200).json({ unlocked: false });
     }
 
     const customerId = customerData.data[0].id;
 
-    // Step 2: Get transactions for this customer
+    // Step 2: Get completed transactions for this customer
     const transactionsResponse = await fetch(
-      `https://sandbox-api.paddle.com/transactions?customer_id=${customerId}&status=completed`,
+      `https://api.paddle.com/transactions?customer_id=${customerId}&status=completed`,
       { headers }
     );
 
@@ -56,11 +53,11 @@ export default async function handler(req, res) {
     }
 
     const transactionsData = await transactionsResponse.json();
-    
-    // Check if any transaction contains our product
+
+    // Check if any transaction contains the production product
     const hasPurchased = transactionsData.data?.some(transaction =>
-      transaction.items?.some(item => 
-        item.price.id === 'pri_01kfc8wsrhhqezk6htxdy7eppe'
+      transaction.items?.some(item =>
+        item.price.id === 'pri_01kg5n2jrb4xwpgehfhrpqjm0y'
       )
     );
 
