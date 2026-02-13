@@ -1,0 +1,58 @@
+/* ===================================
+   ADD THESE TO THE BOTTOM OF style.css
+   =================================== */
+
+/* Restore purchase link */
+.restore-link {
+    margin-top: 8px;
+    font-size: 14px;
+}
+.restore-link a {
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.restore-link a:hover {
+    opacity: 0.8;
+}
+
+/* Unlocked status message */
+.unlocked-msg {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Supported formats grid */
+.formats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+}
+.formats-grid > div {
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+}
+.formats-grid h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+}
+.formats-grid p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* How it works section */
+#howItWorks ol {
+    padding-left: 20px;
+}
+#howItWorks li {
+    margin-bottom: 8px;
+}
+
+/* EXIF options wrapper */
+#exifOptions {
+    margin-top: 8px;
+}
