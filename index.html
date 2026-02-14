@@ -1,182 +1,710 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BSK4FMVEZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0BSK4FMVEZ');
+    </script>
+    <meta name="p:domain_verify" content="22dded8e603afa3dc4253ce1ac4a6248" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Delivery Prep — Rename, Clean &amp; ZIP Photos &amp; Videos for Client Delivery</title>
-    <meta name="description" content="Batch rename, strip EXIF metadata, and ZIP photos and videos for client delivery. Supports JPEG, PNG, TIFF, RAW, MP4, MOV and more. 100% browser-based — your files never leave your device.">
-
-    <!-- Favicon -->
+    <meta name="description" content="Free Micro Web Tools - 18 free, fast, privacy-friendly online utilities including calculators, text tools, image utilities, invoice generator, and more. No login required, 100% client-side.">
+    <meta name="keywords" content="free online tools, calculator, text cleaner, image resizer, word counter, markdown converter, tip calculator, invoice generator, EXIF remover, color palette generator">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Free Micro Web Tools">
+    <link rel="canonical" href="https://freemicrotools.app/">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-
+    <title>Free Micro Web Tools | 18 Fast, Free Online Utilities</title>
+    
     <!-- Open Graph -->
+    <meta property="og:site_name" content="Free Micro Web Tools">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Photo Delivery Prep — Rename, Clean & ZIP Files for Client Delivery">
-    <meta property="og:description" content="Batch rename, strip EXIF metadata, and ZIP photos and videos for client delivery. Supports JPEG, PNG, TIFF, RAW, MP4, MOV and more. 100% browser-based.">
-    <meta property="og:url" content="https://photodeliveryprep.com">
-    <meta property="og:site_name" content="Photo Delivery Prep">
+    <meta property="og:title" content="Free Micro Web Tools | 18 Fast, Free Online Utilities">
+    <meta property="og:description" content="Free, fast, privacy-friendly online utilities. Calculators, text tools, image utilities, and more. No login required.">
+    <meta property="og:url" content="https://freemicrotools.app/">
+    
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Photo Delivery Prep — Rename, Clean & ZIP Files for Client Delivery">
-    <meta name="twitter:description" content="Batch rename, strip EXIF metadata, and ZIP photos and videos for client delivery. 100% browser-based — your files never leave your device.">
-
-    <!-- Canonical -->
-    <link rel="canonical" href="https://photodeliveryprep.com/">
+    <meta name="twitter:title" content="Free Micro Web Tools | 18 Fast, Free Online Utilities">
+    <meta name="twitter:description" content="Free Micro Web Tools - 18 free, fast, privacy-friendly online utilities including calculators, text tools, image utilities, invoice generator, and more. No login required, 100% client-side.">
 
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "Photo Delivery Prep",
-        "url": "https://photodeliveryprep.com",
-        "description": "Browser-based tool for photographers and videographers to batch rename, strip EXIF metadata, and package files into a ZIP for client delivery.",
-        "applicationCategory": "MultimediaApplication",
-        "operatingSystem": "Any (browser-based)",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD",
-            "description": "Free for up to 10 files. One-time $9.99 payment for unlimited."
-        },
-        "featureList": [
-            "Batch file renaming with custom prefix and numbering",
-            "EXIF metadata preview and removal for JPEG files",
-            "GPS data stripping",
-            "Camera serial number removal",
-            "ZIP packaging for client delivery",
-            "Support for JPEG, PNG, TIFF, RAW, and video files",
-            "100% client-side processing — files never uploaded"
-        ]
+        "@type": "WebSite",
+        "name": "Free Micro Web Tools",
+        "url": "https://freemicrotools.app/",
+        "description": "A collection of 18 free, fast, client-side web utilities including calculators, text tools, and image utilities",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://freemicrotools.app/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
     }
     </script>
+    
+    <style>
+        /* ========== CSS Reset & Base Styles ========== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <link rel="stylesheet" href="style.css">
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ========== Header ========== */
+        .header {
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: white;
+            padding: 2.5rem 1rem 1.5rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .header-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        /* ========== Jump Menu ========== */
+        .jump-menu {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 10px;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .jump-menu-title {
+            font-size: 0.6875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.8;
+            margin-bottom: 0.625rem;
+        }
+
+        .jump-menu-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .jump-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .jump-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .jump-link-icon {
+            font-size: 0.875rem;
+        }
+
+        /* ========== Container ========== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* ========== Features Banner ========== */
+        .features-banner {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #065f46;
+        }
+
+        .feature-icon {
+            font-size: 1rem;
+        }
+
+        /* ========== Category Section ========== */
+        .category-section {
+            margin-bottom: 2.5rem;
+            scroll-margin-top: 1rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .category-icon {
+            font-size: 1.25rem;
+        }
+
+        .category-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .category-count {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 0.6875rem;
+            font-weight: 700;
+            padding: 0.125rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        /* ========== Tools Grid ========== */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        /* ========== Tool Card ========== */
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .tool-card:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .tool-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.625rem;
+        }
+
+        .tool-emoji {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .tool-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .tool-description {
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .tool-tag {
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.25rem 0.625rem;
+            background: #f1f5f9;
+            color: var(--text-muted);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            align-self: flex-start;
+        }
+
+        /* ========== Footer ========== */
+        footer {
+            background: white;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.8125rem;
+        }
+
+        .footer-brand {
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ========== Back to Top ========== */
+        .back-to-top {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary-light);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 600px) {
+            .header {
+                padding: 2rem 1rem 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.625rem;
+            }
+
+            .jump-menu {
+                padding: 0.875rem;
+            }
+
+            .jump-menu-links {
+                gap: 0.375rem;
+            }
+
+            .jump-link {
+                padding: 0.3125rem 0.625rem;
+                font-size: 0.75rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-banner {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: center;
+            }
+
+            .footer-links {
+                gap: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Photo Delivery Prep</h1>
-        <p>Rename, clean metadata, and package files for client delivery — all in your browser</p>
+    <!-- Header with Jump Menu -->
+    <header class="header" id="top">
+        <h1>🛠️ Free Micro Web Tools</h1>
+        <p class="header-tagline">Fast, free, and private online utilities. No login required – everything runs in your browser.</p>
+        <span class="header-badge">✨ 18 Free Tools</span>
+
+        <!-- Quick Jump Menu -->
+        <nav class="jump-menu" aria-label="Quick Navigation to Tool Categories">
+            <div class="jump-menu-title">Jump to Category</div>
+            <div class="jump-menu-links">
+                <a href="#calculators" class="jump-link" aria-label="Jump to Calculators section">
+                    <span class="jump-link-icon" aria-hidden="true">🧮</span>
+                    <span>Calculators</span>
+                </a>
+                <a href="#text-tools" class="jump-link" aria-label="Jump to Text Tools section">
+                    <span class="jump-link-icon" aria-hidden="true">📝</span>
+                    <span>Text Tools</span>
+                </a>
+                <a href="#color-design" class="jump-link" aria-label="Jump to Color and Design section">
+                    <span class="jump-link-icon" aria-hidden="true">🎨</span>
+                    <span>Color & Design</span>
+                </a>
+                <a href="#name-random" class="jump-link" aria-label="Jump to Name and Random Utilities section">
+                    <span class="jump-link-icon" aria-hidden="true">🎲</span>
+                    <span>Name & Random</span>
+                </a>
+                <a href="#image-file" class="jump-link" aria-label="Jump to Image and File Utilities section">
+                    <span class="jump-link-icon" aria-hidden="true">🖼️</span>
+                    <span>Image & File</span>
+                </a>
+                <a href="#other-tools" class="jump-link" aria-label="Jump to Other Tools section">
+                    <span class="jump-link-icon" aria-hidden="true">🔧</span>
+                    <span>Other Tools</span>
+                </a>
+            </div>
+        </nav>
     </header>
-    <main>
-        <!-- Upload Section -->
-        <section id="uploadSection">
-            <label class="file-label">
-                Choose files
-                <input type="file" id="fileInput" accept="image/*,.cr2,.cr3,.nef,.arw,.dng,.orf,.raf,.rw2" multiple>
-            </label>
-            <p class="helper-text">Images, RAW files, and videos. Files are processed in filename order.</p>
-        </section>
 
-        <!-- Action Buttons Section -->
-        <section id="actionButtons">
-            <div id="limitMessage"></div>
-            <button id="downloadBtn">Download ZIP</button>
-        </section>
+    <main class="container">
+<!-- Features Banner -->
+        <div class="features-banner" role="region" aria-label="Key Features">
+            <div class="feature-item">
+                <span class="feature-icon" aria-hidden="true">🔒</span>
+                <span>100% Private</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon" aria-hidden="true">⚡</span>
+                <span>Instant Results</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon" aria-hidden="true">📱</span>
+                <span>Mobile Friendly</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon" aria-hidden="true">🆓</span>
+                <span>Always Free</span>
+            </div>
+        </div>
 
-        <!-- Rename Section -->
-        <section id="renameSection">
-            <label>Filename prefix (optional):
-                <input type="text" id="filenamePrefix" placeholder="Optional prefix">
-            </label>
-            <label>Starting number:
-                <input type="number" id="startNum" value="1" min="1">
-            </label>
-            <div id="exifOptions">
-                <label><input type="checkbox" id="removeGPS"> Remove GPS data <span class="helper-text">(JPEG only)</span></label>
-                <label><input type="checkbox" id="removeSerial"> Remove camera serial &amp; software tags <span class="helper-text">(JPEG only)</span></label>
+        <!-- ==================== CALCULATORS ==================== -->
+        <section class="category-section" id="calculators" aria-labelledby="calculators-heading">
+            <div class="category-header">
+                <span class="category-icon" aria-hidden="true">🧮</span>
+                <h2 class="category-title" id="calculators-heading">Calculators</h2>
+                <span class="category-count">6 tools</span>
+            </div>
+            <div class="tools-grid">
+                <a href="roi-calculator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">📈</span>
+                        <h3 class="tool-name">ROI Calculator</h3>
+                    </div>
+                    <p class="tool-description">Calculate return on investment quickly and accurately. Enter your initial investment and final value to see percentage gains, annualized returns, and break-even analysis for smarter financial decisions.</p>
+                    <span class="tool-tag">Finance</span>
+                </a>
+
+                <a href="tip-calculator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">💵</span>
+                        <h3 class="tool-name">Tip Calculator</h3>
+                    </div>
+                    <p class="tool-description">Calculate tips and split bills easily at restaurants and bars. Choose custom tip percentages, divide among multiple people, and see per-person totals instantly with a complete tip breakdown.</p>
+                    <span class="tool-tag">Finance</span>
+                </a>
+
+                <a href="credit-card-payoff.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">💳</span>
+                        <h3 class="tool-name">Credit Card Payoff Calculator</h3>
+                    </div>
+                    <p class="tool-description">See how long to pay off your credit card balance and total interest paid over time. Discover how extra payments can save you money and time with detailed monthly payment schedules.</p>
+                    <span class="tool-tag">Debt</span>
+                </a>
+
+                <a href="bill-splitter.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">🍽️</span>
+                        <h3 class="tool-name">Expense Splitter</h3>
+                    </div>
+                    <p class="tool-description">Split expenses fairly among friends, roommates, or colleagues. Handle uneven splits, add individual items, include tax and tip, and generate shareable summaries for hassle-free group payments.</p>
+                    <span class="tool-tag">Finance</span>
+                </a>
+
+                <a href="business-day-calculator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">📅</span>
+                        <h3 class="tool-name">Business Day Calculator</h3>
+                    </div>
+                    <p class="tool-description">Count business days between two dates or find a target date N business days from now. Automatically excludes weekends for accurate workday calculations and deadline planning.</p>
+                    <span class="tool-tag">Productivity</span>
+                </a>
+
+                <a href="working-hours-calculator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">⏱️</span>
+                        <h3 class="tool-name">Working Hours Calculator</h3>
+                    </div>
+                    <p class="tool-description">Track work hours and calculate pay accurately for timesheets. Enter start/end times, breaks, and hourly rate to get daily, weekly, and overtime totals with complete earnings breakdown.</p>
+                    <span class="tool-tag">Productivity</span>
+                </a>
             </div>
         </section>
 
-        <!-- File List & Metadata Section -->
-        <section id="metadataSection">
-            <div id="fileList"></div>
-            <div id="metadata"></div>
-        </section>
-
-        <!-- How It Works -->
-        <section id="howItWorks">
-            <h2>How It Works</h2>
-            <ol>
-                <li><strong>Select your files</strong> — drag or choose JPEGs, PNGs, TIFFs, RAW files, or videos from your computer.</li>
-                <li><strong>Set a naming scheme</strong> — add an optional prefix and choose a starting number. The tool renumbers files in alphabetical order.</li>
-                <li><strong>Choose metadata options</strong> — for JPEG files, you can strip GPS coordinates, camera serial numbers, and software tags before delivery.</li>
-                <li><strong>Download the ZIP</strong> — one click produces a ready-to-send package with your renamed (and optionally cleaned) files.</li>
-            </ol>
-            <p>Everything runs locally in your browser using JavaScript. Your files are never uploaded to a server.</p>
-        </section>
-
-        <!-- Features -->
-        <section id="featuresSection">
-            <h2>Features</h2>
-            <ul>
-                <li>Batch rename and renumber files after export with an optional prefix</li>
-                <li>Supports JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC, RAW (CR2, NEF, ARW, DNG, and more), and video (MP4, MOV, AVI, MKV)</li>
-                <li>Preview EXIF metadata on JPEG files — capture date, camera model, copyright, GPS, serial numbers, and software tags</li>
-                <li>Strip sensitive EXIF data (GPS, serial numbers, software tags) from JPEGs without altering image pixels</li>
-                <li>Package everything into a ready-to-send ZIP</li>
-                <li>Free tier processes up to 10 files — unlock unlimited with a one-time $9.99 payment</li>
-                <li>100% client-side — your files are never uploaded or stored on a server</li>
-            </ul>
-        </section>
-
-        <!-- Supported Formats -->
-        <section id="formatsSection">
-            <h2>Supported File Formats</h2>
-            <div class="formats-grid">
-                <div>
-                    <h3>Images</h3>
-                    <p>JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC / HEIF</p>
-                </div>
-                <div>
-                    <h3>RAW Files</h3>
-                    <p>Canon CR2 / CR3, Nikon NEF, Sony ARW, Adobe DNG, Olympus ORF, Fuji RAF, Panasonic RW2</p>
-                </div>
-                <div>
-                    <h3>Video</h3>
-                    <p>MP4, MOV, AVI, MKV, WMV, WebM</p>
-                </div>
+        <!-- ==================== TEXT / WORD UTILITIES ==================== -->
+        <section class="category-section" id="text-tools" aria-labelledby="text-tools-heading">
+            <div class="category-header">
+                <span class="category-icon" aria-hidden="true">📝</span>
+                <h2 class="category-title" id="text-tools-heading">Text & Word Utilities</h2>
+                <span class="category-count">4 tools</span>
             </div>
-            <p class="helper-text">EXIF metadata preview and removal is available for JPEG files. All other formats are renamed and packaged as-is.</p>
+            <div class="tools-grid">
+                <a href="word-counter.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">🔢</span>
+                        <h3 class="tool-name">Word Counter</h3>
+                    </div>
+                    <p class="tool-description">Count words, characters, sentences, paragraphs, and lines instantly as you type. Get reading time estimates and keyword density analysis perfect for writers, students, and content creators.</p>
+                    <span class="tool-tag">Writing</span>
+                </a>
+
+                <a href="text-cleaner.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">🧹</span>
+                        <h3 class="tool-name">Text Cleaner</h3>
+                    </div>
+                    <p class="tool-description">Clean and normalize messy text instantly with multiple options. Remove extra spaces, fix line breaks, strip HTML tags, convert smart quotes to straight quotes, and format text for clean copy-paste.</p>
+                    <span class="tool-tag">Writing</span>
+                </a>
+
+                <a href="headline-analyzer.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">📰</span>
+                        <h3 class="tool-name">Headline Analyzer</h3>
+                    </div>
+                    <p class="tool-description">Score your headlines for maximum engagement and SEO impact. Analyze length, emotional impact, power words, and skimmability to craft titles that grab attention and drive more clicks.</p>
+                    <span class="tool-tag">Marketing</span>
+                </a>
+
+                <a href="markdown-to-html.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">📄</span>
+                        <h3 class="tool-name">Markdown → HTML Converter</h3>
+                    </div>
+                    <p class="tool-description">Convert Markdown to clean, semantic HTML instantly. Supports headings, lists, links, images, code blocks, tables, and more. Preview rendered output live and copy HTML code for your projects.</p>
+                    <span class="tool-tag">Development</span>
+                </a>
+            </div>
         </section>
 
-        <!-- FAQ -->
-        <section id="faqSection">
-            <h2>FAQ</h2>
-            <dl>
-                <dt>Do my files get uploaded?</dt>
-                <dd>No. All processing happens locally in your browser. Your files never leave your device.</dd>
-                <dt>What file types are supported?</dt>
-                <dd>JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC, common RAW formats (CR2, NEF, ARW, DNG, etc.), and video files (MP4, MOV, AVI, MKV, and more).</dd>
-                <dt>Does this affect image or video quality?</dt>
-                <dd>No. The tool only renames files and optionally strips EXIF metadata from JPEGs. Pixel data and video streams are never modified.</dd>
-                <dt>Why not rename on export?</dt>
-                <dd>Client deliveries often change after export — selects get revised, sequences shift. This tool lets you adjust naming and strip metadata without re-exporting from Lightroom, Capture One, or your NLE.</dd>
-                <dt>Can I process RAW and video files?</dt>
-                <dd>Yes. RAW and video files are renamed and packaged into the ZIP. EXIF metadata stripping is only available for JPEG files since RAW and video formats use proprietary metadata structures.</dd>
-                <dt>What does "Unlock Unlimited" mean?</dt>
-                <dd>Free users can process up to 10 files per batch. A one-time $9.99 payment removes this limit permanently. No subscription, no account required.</dd>
-                <dt>I already paid but my unlock is gone. What do I do?</dt>
-                <dd>Your unlock is stored in your browser. If you cleared your browser data or switched devices, use the "Restore Purchase" link that appears when you hit the free limit. Enter the email you used at checkout and your unlock will be restored.</dd>
-            </dl>
+        <!-- ==================== COLOR & DESIGN ==================== -->
+        <section class="category-section" id="color-design" aria-labelledby="color-design-heading">
+            <div class="category-header">
+                <span class="category-icon" aria-hidden="true">🎨</span>
+                <h2 class="category-title" id="color-design-heading">Color & Design</h2>
+                <span class="category-count">1 tool</span>
+            </div>
+            <div class="tools-grid">
+                <a href="color-palette-generator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">🌈</span>
+                        <h3 class="tool-name">Color Palette Generator</h3>
+                    </div>
+                    <p class="tool-description">Generate beautiful, harmonious color palettes for your design projects. Create complementary, analogous, triadic, and WCAG-accessible color schemes. Copy HEX, RGB, or HSL codes instantly.</p>
+                    <span class="tool-tag">Design</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ==================== NAME / RANDOM UTILITIES ==================== -->
+        <section class="category-section" id="name-random" aria-labelledby="name-random-heading">
+            <div class="category-header">
+                <span class="category-icon" aria-hidden="true">🎲</span>
+                <h2 class="category-title" id="name-random-heading">Name & Random Utilities</h2>
+                <span class="category-count">2 tools</span>
+            </div>
+            <div class="tools-grid">
+                <a href="random-name-generator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">🎰</span>
+                        <h3 class="tool-name">Random Name / List Generator</h3>
+                    </div>
+                    <p class="tool-description">Generate random names, assign teams, or create placeholder lists instantly. Perfect for mockups, testing data, team assignments, raffles, giveaways, and any random selection tasks.</p>
+                    <span class="tool-tag">Utility</span>
+                </a>
+
+                <a href="filename-cleaner.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">📁</span>
+                        <h3 class="tool-name">File Name Cleaner</h3>
+                    </div>
+                    <p class="tool-description">Clean and standardize file names in bulk for better organization. Remove special characters, spaces, and accents. Convert to kebab-case, snake_case, or camelCase for web and code projects.</p>
+                    <span class="tool-tag">Utility</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ==================== IMAGE / FILE UTILITIES ==================== -->
+        <section class="category-section" id="image-file" aria-labelledby="image-file-heading">
+            <div class="category-header">
+                <span class="category-icon" aria-hidden="true">🖼️</span>
+                <h2 class="category-title" id="image-file-heading">Image & File Utilities</h2>
+                <span class="category-count">2 tools</span>
+            </div>
+            <div class="tools-grid">
+                <a href="batch-image-resizer.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">📐</span>
+                        <h3 class="tool-name">Batch Image Resizer</h3>
+                    </div>
+                    <p class="tool-description">Resize multiple images at once directly in your browser. Set dimensions by percentage, max width, or exact size. Download individually or as ZIP. 100% private – images never leave your device.</p>
+                    <span class="tool-tag">Images</span>
+                </a>
+
+                <a href="exif-remover.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">🔒</span>
+                        <h3 class="tool-name">EXIF Data Remover</h3>
+                    </div>
+                    <p class="tool-description">Strip metadata from photos for complete privacy protection. Remove GPS location, camera info, timestamps, and embedded thumbnails. Process multiple images locally without uploading anywhere.</p>
+                    <span class="tool-tag">Privacy</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ==================== OTHER TOOLS ==================== -->
+        <section class="category-section" id="other-tools" aria-labelledby="other-tools-heading">
+            <div class="category-header">
+                <span class="category-icon" aria-hidden="true">🔧</span>
+                <h2 class="category-title" id="other-tools-heading">Other Tools</h2>
+                <span class="category-count">3 tools</span>
+            </div>
+            <div class="tools-grid">
+                <a href="invoice-generator.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">🧾</span>
+                        <h3 class="tool-name">Invoice Generator</h3>
+                    </div>
+                    <p class="tool-description">Create professional invoices in seconds without any software. Add line items, tax, discounts, and payment terms. Export to PDF for free. Perfect for freelancers, contractors, and small businesses.</p>
+                    <span class="tool-tag">Business</span>
+                </a>
+
+                <a href="csv-line-combiner.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">📋</span>
+                        <h3 class="tool-name">CSV Line Combiner / Splitter</h3>
+                    </div>
+                    <p class="tool-description">Split large lists into smaller chunks or combine CSV columns into single lines. Auto-detects delimiters including comma, tab, and semicolon. Perfect for batch processing and data cleanup tasks.</p>
+                    <span class="tool-tag">Data</span>
+                </a>
+
+                <a href="countdown-timer.html" class="tool-card">
+                    <div class="tool-card-header">
+                        <span class="tool-emoji" aria-hidden="true">⏰</span>
+                        <h3 class="tool-name">Countdown / Deadline Timer</h3>
+                    </div>
+                    <p class="tool-description">Set countdown timers for deadlines, events, or daily tasks. Customize labels, enable or mute sound alerts, and silence alarms easily. Works in the background with optional browser notifications.</p>
+                    <span class="tool-tag">Productivity</span>
+                </a>
+            </div>
+
+            <!-- Back to Top -->
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="#top" class="back-to-top" aria-label="Back to top of page">
+                    <span aria-hidden="true">↑</span>
+                    <span>Back to Top</span>
+                </a>
+            </div>
         </section>
     </main>
-
+<!-- Footer -->
     <footer>
-        <p>Photo Delivery Prep &copy; 2026 — All processing takes place locally in your browser. No files are uploaded or stored on a server.</p>
-        <p>
-            <a href="about.html">About</a> &middot;
-            <a href="privacy.html">Privacy</a> &middot;
-            <a href="terms.html">Terms</a> &middot;
-            <a href="refunds.html">Refunds</a> &middot;
-            <a href="price.html">Pricing</a>
-        </p>
+        <div class="footer-brand">Free Micro Web Tools</div>
+        <p>© 2026 All tools are free to use. No data is stored or uploaded.</p>
+        <nav class="footer-links" aria-label="Footer Navigation">
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </nav>
     </footer>
 
-    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
-    <script src="main.js?v=4"></script>
+    <!-- GA4 Event Tracking -->
+    <script>
+        // Track homepage landing
+        document.addEventListener('DOMContentLoaded', function() {
+            gtag('event', 'index_landed');
+        });
+    </script>
 </body>
 </html>

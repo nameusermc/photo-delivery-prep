@@ -1,55 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BSK4FMVEZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0BSK4FMVEZ');
+    </script>
+    <meta name="p:domain_verify" content="22dded8e603afa3dc4253ce1ac4a6248" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — Photo Delivery Prep</title>
-    <meta name="description" content="Photo Delivery Prep is a browser-based file utility built for photographers and videographers who need to rename, clean metadata, and package files for client delivery.">
+    <meta name="description" content="About Free Micro Web Tools - Simple, fast, browser-based utilities">
+    <meta name="keywords" content="about free micro web tools, free online tools, browser-based utilities">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://freemicrotools.app/about.html">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="stylesheet" href="style.css">
+    <title>About | Free Micro Web Tools</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Free Micro Web Tools">
+    <meta property="og:title" content="About | Free Micro Web Tools">
+    <meta property="og:description" content="About Free Micro Web Tools - Simple, fast, browser-based utilities">
+    <meta property="og:url" content="https://freemicrotools.app/about.html">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="About | Free Micro Web Tools">
+    <meta name="twitter:description" content="About Free Micro Web Tools - Simple, fast, browser-based utilities">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "name": "About Free Micro Web Tools",
+        "url": "https://freemicrotools.app/about.html",
+        "description": "About Free Micro Web Tools - Simple, fast, browser-based utilities",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Free Micro Web Tools",
+            "url": "https://freemicrotools.app/"
+        }
+    }
+    </script>
+
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 0.875rem;
+        }
+
+        .back-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8125rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1><a href="/" style="text-decoration:none;color:inherit;">Photo Delivery Prep</a></h1>
-        <p>About this tool</p>
-        <a href="/" class="back-btn" style="display:inline-block;margin-top:10px;padding:8px 20px;background:#2563eb;color:#fff;text-decoration:none;border-radius:5px;font-size:14px;">&larr; Back to App</a>
-    </header>
-    <main>
-        <section>
-            <h2>What is Photo Delivery Prep?</h2>
-            <p>Photo Delivery Prep is a browser-based utility for photographers and videographers. It solves a common workflow pain point: after exporting your final selects, client needs change — images get reordered, selects shift, or you need to strip metadata before sending. Rather than re-exporting from Lightroom, Capture One, or your NLE, this tool lets you rename, renumber, clean EXIF data, and package everything into a ZIP — right in your browser.</p>
-        </section>
+    <div class="container">
+<a href="index.html" class="back-link">← Back to Tools</a>
 
-        <section>
-            <h2>How it works</h2>
-            <p>All file processing happens locally on your device using JavaScript. Your photos and videos are never uploaded to a server. The tool reads your files in the browser, applies the renaming and metadata changes you specify, and generates a ZIP file for download. No accounts, no cloud storage, no tracking.</p>
-        </section>
+        <main class="card">
+            <h1>About</h1>
 
-        <section>
-            <h2>Who built this?</h2>
-            <p>Photo Delivery Prep was built by a photographer who got tired of re-exporting files every time a client changed their mind about delivery order. It started as a personal tool and grew into something worth sharing.</p>
-        </section>
+            <p>Free Micro Web Tools is a collection of simple, fast, browser-based utilities. These tools are designed to solve small, common problems without signups, installs, or friction.</p>
 
-        <section>
-            <h2>Privacy &amp; Security</h2>
-            <p>Your files never leave your device. There is no server-side file processing, no upload, no storage, and no analytics tracking your file contents. The only network requests the site makes are to load the page itself and to process payments through Paddle (our payment provider) if you choose to unlock unlimited processing. You can read the full <a href="privacy.html">privacy policy</a> for details.</p>
-        </section>
+            <p>All tools run directly in your browser and are free to use.</p>
+</main>
 
-        <section>
-            <h2>Contact</h2>
-            <p>Questions, feedback, or issues? Reach out at <a href="mailto:support@photodeliveryprep.com">support@photodeliveryprep.com</a></p>
-        </section>
-    </main>
-
-    <footer>
-        <p>Photo Delivery Prep &copy; 2026</p>
-        <p>
-            <a href="/">Home</a> &middot;
-            <a href="privacy.html">Privacy</a> &middot;
-            <a href="terms.html">Terms</a> &middot;
-            <a href="refunds.html">Refunds</a> &middot;
-            <a href="price.html">Pricing</a>
-        </p>
-    </footer>
+        <footer>
+            <p>© 2026 Free Micro Web Tools. All tools are free to use.</p>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>

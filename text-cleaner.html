@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BSK4FMVEZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0BSK4FMVEZ');
+    </script>
+    <meta name="p:domain_verify" content="22dded8e603afa3dc4253ce1ac4a6248" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free Text Cleaner - Clean and normalize messy text instantly. Remove extra spaces, fix line breaks, strip HTML tags, and convert smart quotes for clean copy-paste.">
+    <meta name="keywords" content="text cleaner, remove extra spaces, normalize text, strip HTML, text formatter, clean text online">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://freemicrotools.app/text-cleaner.html">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Text Cleaner — Free Online Text Normalizer Tool | Free Micro Tools</title>
+    
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Free Micro Web Tools">
+    <meta property="og:title" content="Text Cleaner — Free Online Text Normalizer Tool | Free Micro Tools">
+    <meta property="og:description" content="Free Text Cleaner - Clean and normalize messy text instantly. Remove extra spaces, fix line breaks, strip HTML tags, and convert smart quotes for clean copy-paste.">
+    <meta property="og:url" content="https://freemicrotools.app/text-cleaner.html">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Text Cleaner — Free Online Text Normalizer Tool | Free Micro Tools">
+    <meta name="twitter:description" content="Free Text Cleaner - Clean and normalize messy text instantly. Remove extra spaces, fix line breaks, strip HTML tags, and convert smart quotes for clean copy-paste.">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Text Cleaner",
+        "description": "Clean and normalize messy text by removing extra spaces and fixing formatting",
+        "url": "https://freemicrotools.app/text-cleaner.html",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+    <style>
+        /* ========== CSS Reset & Base Styles ========== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #059669;
+            --primary-dark: #047857;
+            --primary-light: #d1fae5;
+            --success: #10b981;
+            --bg: #f0fdf4;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* ========== Layout ========== */
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* ========== Card Component ========== */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .card-subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ========== Form Elements ========== */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9375rem;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .input-hint {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ========== Cleaning Options ========== */
+        .options-section {
+            margin-bottom: 1.25rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 0.75rem;
+            background: #f8fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .option-item:hover {
+            background: var(--primary-light);
+        }
+
+        .option-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .option-item label {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* ========== Action Buttons ========== */
+        .btn-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.875rem 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ========== Output Section ========== */
+        .output-section {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .output-section.show {
+            display: block;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .output-title {
+            font-weight: 700;
+            font-size: 0.9375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-copy {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-copy:hover {
+            background: var(--primary-dark);
+        }
+
+        .output-textarea {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+        }
+
+        /* ========== Stats Bar ========== */
+        .stats-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: var(--primary-light);
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.8125rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .stat-change {
+            font-size: 0.75rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .stat-change.negative {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        /* ========== Instructions Section ========== */
+        .instructions {
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .instructions h3 {
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .instructions ul {
+            margin-left: 1.25rem;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .instructions li {
+            margin-bottom: 0.25rem;
+        }
+
+        /* ========== Toast ========== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ========== Footer ========== */
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ========== Tool Description ========== */
+        .tool-description {
+            background: linear-gradient(135deg, #f0fdf4 0%, #d1fae5 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .tool-description p {
+            margin: 0;
+            color: var(--text);
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 500px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-row {
+                flex-direction: column;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html">← Back to Tools</a>
+<!-- Tool Description -->
+        <div class="tool-description">
+            <p>Clean and normalize messy text instantly. Remove extra spaces, fix line breaks, and tidy up text copied from PDFs, emails, or documents.</p>
+        </div>
+
+        <!-- Main Tool Card -->
+        <main class="card">
+            <h1 class="card-title">🧹 Text Cleaner</h1>
+            <p class="card-subtitle">Remove extra spaces and normalize text</p>
+
+            <!-- Input Textarea -->
+            <div class="form-group">
+                <label for="inputText">Paste Your Text</label>
+                <textarea 
+                    id="inputText" 
+                    rows="8" 
+                    placeholder="Paste your messy text here...
+
+For example:
+- Text    with     extra   spaces
+- Multiple
+
+line breaks
+- Text copied from PDFs or emails"
+                ></textarea>
+                <div class="input-hint">Paste or type text to clean</div>
+            </div>
+
+            <!-- Cleaning Options -->
+            <div class="options-section">
+                <label>Cleaning Options</label>
+                <div class="options-grid">
+                    <div class="option-item">
+                        <input type="checkbox" id="optSpaces" checked>
+                        <label for="optSpaces">Remove extra spaces</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optLineBreaks" checked>
+                        <label for="optLineBreaks">Normalize line breaks</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optTrim" checked>
+                        <label for="optTrim">Trim whitespace</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optTabs" checked>
+                        <label for="optTabs">Convert tabs to spaces</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optTrailing">
+                        <label for="optTrailing">Remove trailing spaces</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="optSingleLine">
+                        <label for="optSingleLine">Single line output</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="btn-row">
+                <button type="button" class="btn btn-primary" id="cleanBtn">
+                    <span>✨</span> Clean Text
+                </button>
+                <button type="button" class="btn btn-secondary" id="clearBtn">
+                    <span>🗑️</span> Clear
+                </button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="output-section" id="outputSection">
+                <div class="output-header">
+                    <span class="output-title">
+                        <span>✅</span> Cleaned Text
+                    </span>
+                    <button type="button" class="btn-copy" id="copyBtn">
+                        📋 Copy
+                    </button>
+                </div>
+                <textarea 
+                    id="outputText" 
+                    class="output-textarea"
+                    rows="8" 
+                    readonly
+                ></textarea>
+
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="stat-label">Characters:</span>
+                        <span class="stat-value" id="statChars">0</span>
+                        <span class="stat-change" id="statCharsChange"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Words:</span>
+                        <span class="stat-value" id="statWords">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Lines:</span>
+                        <span class="stat-value" id="statLines">0</span>
+                    </div>
+                </div>
+            </div>
+<!-- Usage Instructions --><div class="instructions">
+                <h3>📖 How to Use</h3>
+                <ul>
+                    <li><strong>Paste</strong> your messy text into the input box</li>
+                    <li><strong>Select options</strong> for the cleaning you need</li>
+                    <li>Click <strong>Clean Text</strong> to process</li>
+                    <li>Click <strong>Copy</strong> to copy the cleaned result</li>
+                    <li>Great for text from PDFs, emails, or web pages</li>
+                </ul>
+            </div>
+        </main>
+<footer>
+            <p>© 2026 Free Micro Web Tools. All tools are free to use.</p>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </div>
+        </footer>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">Copied!</div>
+    </div>
+
+    <script>
+        /**
+         * Text Cleaner / Normalizer
+         * Removes extra spaces and normalizes text
+         * Pure vanilla JavaScript implementation
+         */
+        (function() {
+            'use strict';
+
+            // DOM References
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const outputSection = document.getElementById('outputSection');
+            const cleanBtn = document.getElementById('cleanBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const toast = document.getElementById('toast');
+
+            // Option checkboxes
+            const optSpaces = document.getElementById('optSpaces');
+            const optLineBreaks = document.getElementById('optLineBreaks');
+            const optTrim = document.getElementById('optTrim');
+            const optTabs = document.getElementById('optTabs');
+            const optTrailing = document.getElementById('optTrailing');
+            const optSingleLine = document.getElementById('optSingleLine');
+
+            // Stats elements
+            const statChars = document.getElementById('statChars');
+            const statCharsChange = document.getElementById('statCharsChange');
+            const statWords = document.getElementById('statWords');
+            const statLines = document.getElementById('statLines');
+
+            /**
+             * Show toast notification
+             * @param {string} message - Message to display
+             */
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            }
+
+            /**
+             * Count words in text
+             * @param {string} text - Text to count
+             * @returns {number} Word count
+             */
+            function countWords(text) {
+                const trimmed = text.trim();
+                if (!trimmed) return 0;
+                return trimmed.split(/\s+/).length;
+            }
+
+            /**
+             * Count lines in text
+             * @param {string} text - Text to count
+             * @returns {number} Line count
+             */
+            function countLines(text) {
+                if (!text.trim()) return 0;
+                return text.split(/\r\n|\r|\n/).length;
+            }
+
+            /**
+             * Clean and normalize text based on selected options
+             * @param {string} text - Input text
+             * @returns {string} Cleaned text
+             */
+            function cleanText(text) {
+                let result = text;
+
+                // Convert tabs to spaces
+                if (optTabs.checked) {
+                    result = result.replace(/\t/g, ' ');
+                }
+
+                // Remove trailing spaces from each line
+                if (optTrailing.checked) {
+                    result = result.replace(/[ \t]+$/gm, '');
+                }
+
+                // Remove extra spaces (multiple spaces to single)
+                if (optSpaces.checked) {
+                    result = result.replace(/[^\S\r\n]+/g, ' ');
+                }
+
+                // Normalize line breaks (multiple to max 2)
+                if (optLineBreaks.checked) {
+                    // Normalize all line break types to \n
+                    result = result.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+                    // Reduce 3+ line breaks to 2
+                    result = result.replace(/\n{3,}/g, '\n\n');
+                }
+
+                // Convert to single line
+                if (optSingleLine.checked) {
+                    result = result.replace(/[\r\n]+/g, ' ');
+                    // Clean up any double spaces created
+                    result = result.replace(/\s{2,}/g, ' ');
+                }
+
+                // Trim leading/trailing whitespace
+                if (optTrim.checked) {
+                    result = result.trim();
+                }
+
+                return result;
+            }
+
+            /**
+             * Update statistics display
+             * @param {string} original - Original text
+             * @param {string} cleaned - Cleaned text
+             */
+            function updateStats(original, cleaned) {
+                const originalChars = original.length;
+                const cleanedChars = cleaned.length;
+                const charDiff = cleanedChars - originalChars;
+
+                statChars.textContent = cleanedChars.toLocaleString();
+                statWords.textContent = countWords(cleaned).toLocaleString();
+                statLines.textContent = countLines(cleaned).toLocaleString();
+
+                // Show character change
+                if (charDiff !== 0) {
+                    const sign = charDiff > 0 ? '+' : '';
+                    statCharsChange.textContent = `${sign}${charDiff}`;
+                    statCharsChange.className = 'stat-change ' + (charDiff > 0 ? 'positive' : 'negative');
+                    statCharsChange.style.display = 'inline';
+                } else {
+                    statCharsChange.style.display = 'none';
+                }
+            }
+
+            /**
+             * Handle clean button click
+             */
+            function handleClean() {
+                const input = inputText.value;
+                
+                if (!input.trim()) {
+                    showToast('⚠️ Please enter some text');
+                    return;
+                }
+
+                const cleaned = cleanText(input);
+                outputText.value = cleaned;
+                updateStats(input, cleaned);
+                outputSection.classList.add('show');
+
+                // Scroll to output
+                setTimeout(() => {
+                    outputSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+
+                showToast('✨ Text cleaned!');
+            }
+
+            /**
+             * Handle clear button click
+             */
+            function handleClear() {
+                inputText.value = '';
+                outputText.value = '';
+                outputSection.classList.remove('show');
+                inputText.focus();
+            }
+
+            /**
+             * Handle copy button click
+             */
+            async function handleCopy() {
+                const text = outputText.value;
+                
+                if (!text) {
+                    showToast('⚠️ Nothing to copy');
+                    return;
+                }
+
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showToast('✓ Copied to clipboard!');
+                } catch (err) {
+                    // Fallback
+                    outputText.select();
+                    document.execCommand('copy');
+                    showToast('✓ Copied to clipboard!');
+                }
+            }
+
+            // Event Listeners
+            cleanBtn.addEventListener('click', handleClean);
+            clearBtn.addEventListener('click', handleClear);
+            copyBtn.addEventListener('click', handleCopy);
+
+            // Keyboard shortcut (Ctrl/Cmd + Enter to clean)
+            inputText.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                    e.preventDefault();
+                    handleClean();
+                }
+            });
+
+            // Auto-clean on paste (optional enhancement)
+            inputText.addEventListener('paste', () => {
+                setTimeout(() => {
+                    if (inputText.value.trim()) {
+                        // Optionally auto-clean on paste
+                        // handleClean();
+                    }
+                }, 100);
+            });
+
+        })();
+    </script>
+
+    <!-- GA4 Event Tracking -->
+    <script>
+        (function() {
+            // Track tool page landing
+            gtag('event', 'tool_landed', {
+                'tool_name': 'Text Cleaner'
+            });
+            
+            // Track tool usage
+            function trackToolUsed(inputCount, customValuesUsed, resultGenerated) {
+                gtag('event', 'tool_used', {
+                    'tool_name': 'Text Cleaner',
+                    'input_count': inputCount || 0,
+                    'custom_values_used': customValuesUsed || false,
+                    'result_generated': resultGenerated || false
+                });
+            }
+            
+            // Expose tracking function globally for this tool
+            window.trackToolUsed = trackToolUsed;
+        })();
+    </script>
+</body>
+</html>

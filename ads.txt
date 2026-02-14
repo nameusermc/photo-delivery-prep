@@ -1,0 +1,2 @@
+ezoic.com, 19390, DIRECT
+google.com, pub-0000000000000000, RESELLER, f08c47fec0942fa0

@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0BSK4FMVEZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0BSK4FMVEZ');
+    </script>
+    <meta name="p:domain_verify" content="22dded8e603afa3dc4253ce1ac4a6248" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free Color Palette Generator - Create beautiful harmonious color palettes. Generate complementary, analogous, triadic, and WCAG-accessible color schemes. Copy HEX, RGB, or HSL codes.">
+    <meta name="keywords" content="color palette generator, color scheme, complementary colors, color picker, hex color, rgb color, design tool">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://freemicrotools.app/color-palette-generator.html">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <title>Color Palette Generator — Free Color Scheme Tool | Free Micro Tools</title>
+    
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Free Micro Web Tools">
+    <meta property="og:title" content="Color Palette Generator — Free Color Scheme Tool | Free Micro Tools">
+    <meta property="og:description" content="Free Color Palette Generator - Create beautiful harmonious color palettes. Generate complementary, analogous, triadic, and WCAG-accessible color schemes. Copy HEX, RGB, or HSL codes.">
+    <meta property="og:url" content="https://freemicrotools.app/color-palette-generator.html">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Color Palette Generator — Free Color Scheme Tool | Free Micro Tools">
+    <meta name="twitter:description" content="Free Color Palette Generator - Create beautiful harmonious color palettes. Generate complementary, analogous, triadic, and WCAG-accessible color schemes. Copy HEX, RGB, or HSL codes.">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Color Palette Generator",
+        "description": "Generate beautiful color palettes with complementary, analogous, and accessible schemes",
+        "url": "https://freemicrotools.app/color-palette-generator.html",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+    <style>
+        /* ========== CSS Reset & Variables ========== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #ede9fe;
+            --secondary: #ec4899;
+            --bg: #faf5ff;
+            --card-bg: #ffffff;
+            --text: #1e1b4b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* ========== Layout ========== */
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* ========== Card Component ========== */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ========== Header ========== */
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* ========== Color Picker Section ========== */
+        .picker-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-radius: 12px;
+        }
+
+        .picker-label {
+            font-weight: 700;
+            font-size: 0.875rem;
+            color: var(--text);
+        }
+
+        .picker-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .color-picker {
+            width: 80px;
+            height: 80px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg), 0 0 0 4px white;
+            transition: transform 0.2s;
+        }
+
+        .color-picker:hover {
+            transform: scale(1.05);
+        }
+
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        .color-picker::-moz-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        .hex-input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .hex-input {
+            width: 120px;
+            padding: 0.625rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .hex-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* ========== Harmony Selector ========== */
+        .harmony-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .harmony-label {
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .harmony-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .harmony-btn {
+            padding: 0.625rem 0.5rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .harmony-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .harmony-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .harmony-icon {
+            font-size: 1.125rem;
+        }
+
+        /* ========== Palette Display ========== */
+        .palette-section {
+            margin-bottom: 1rem;
+        }
+
+        .palette-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .palette-title {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .palette-type-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .btn-randomize {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .btn-randomize:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ========== Color Swatches ========== */
+        .palette-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .color-swatch:hover {
+            transform: translateX(4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .swatch-color {
+            width: 80px;
+            height: 60px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .swatch-info {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .swatch-hex {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 0.9375rem;
+            text-transform: uppercase;
+        }
+
+        .swatch-label {
+            font-size: 0.6875rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .swatch-rgb {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .swatch-contrast {
+            font-size: 0.625rem;
+            color: var(--text-muted);
+            background: #f1f5f9;
+            padding: 0.125rem 0.375rem;
+            border-radius: 4px;
+            margin-top: 0.125rem;
+        }
+
+        .swatch-contrast.pass {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .swatch-contrast.fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .swatch-copy {
+            padding: 0.375rem 0.625rem;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            border-radius: 6px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .swatch-copy:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* ========== Export Section ========== */
+        .export-section {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .btn-export {
+            flex: 1;
+            padding: 0.875rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-export.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-export.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-export.secondary {
+            background: white;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-export.secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ========== Toast ========== */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ========== Instructions ========== */
+        .instructions {
+            background: var(--primary-light);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1.25rem;
+            border-left: 4px solid var(--primary);
+        }
+
+        .instructions h3 {
+            font-size: 0.875rem;
+            margin-bottom: 0.625rem;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        .instructions ul {
+            margin-left: 1.25rem;
+            font-size: 0.8125rem;
+            color: var(--text);
+        }
+
+        .instructions li {
+            margin-bottom: 0.375rem;
+        }
+
+        .instructions li::marker {
+            color: var(--primary);
+        }
+
+        /* ========== Footer ========== */
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ========== Tool Description ========== */
+        .tool-description {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .tool-description p {
+            margin: 0;
+            color: var(--text);
+        }
+
+        /* ========== Responsive ========== */
+        @media (max-width: 480px) {
+            .harmony-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .picker-wrapper {
+                flex-direction: column;
+            }
+
+            .swatch-info {
+                padding: 0.5rem 0.75rem;
+            }
+
+            .swatch-rgb {
+                display: none;
+            }
+
+            .export-section {
+                flex-direction: column;
+            }
+        }
+
+        </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html">← Back to Tools</a>
+<!-- Tool Description -->
+        <div class="tool-description">
+            <p>Generate beautiful, harmonious color palettes from any base color. Includes accessibility-friendly high-contrast pairs and exports to CSS variables.</p>
+        </div>
+
+        <!-- Main Tool Card -->
+        <main class="card">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-icon">🎨</div>
+                <h1 class="header-title">Color Palette Generator</h1>
+                <p class="header-subtitle">Create beautiful color schemes instantly</p>
+            </header>
+
+            <!-- Color Picker Section -->
+            <div class="picker-section">
+                <label class="picker-label">Choose Your Base Color</label>
+                <div class="picker-wrapper">
+                    <input 
+                        type="color" 
+                        id="colorPicker" 
+                        class="color-picker" 
+                        value="#8b5cf6"
+                        aria-label="Base color picker"
+                    >
+                    <div class="hex-input-wrapper">
+                        <input 
+                            type="text" 
+                            id="hexInput" 
+                            class="hex-input" 
+                            value="#8B5CF6"
+                            maxlength="7"
+                            placeholder="#000000"
+                            aria-label="Hex color code"
+                        >
+                        <small style="color: var(--text-muted); font-size: 0.6875rem; text-align: center;">Hex Code</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Harmony Type Selector -->
+            <div class="harmony-section">
+                <label class="harmony-label">🔮 Color Harmony</label>
+                <div class="harmony-grid">
+                    <button class="harmony-btn active" data-harmony="complementary">
+                        <span class="harmony-icon">◐</span>
+                        Complementary
+                    </button>
+                    <button class="harmony-btn" data-harmony="analogous">
+                        <span class="harmony-icon">≋</span>
+                        Analogous
+                    </button>
+                    <button class="harmony-btn" data-harmony="triadic">
+                        <span class="harmony-icon">△</span>
+                        Triadic
+                    </button>
+                    <button class="harmony-btn" data-harmony="split">
+                        <span class="harmony-icon">⋔</span>
+                        Split
+                    </button>
+                    <button class="harmony-btn" data-harmony="tetradic">
+                        <span class="harmony-icon">◇</span>
+                        Tetradic
+                    </button>
+                    <button class="harmony-btn" data-harmony="monochromatic">
+                        <span class="harmony-icon">▥</span>
+                        Monochrome
+                    </button>
+                    <button class="harmony-btn" data-harmony="contrast">
+                        <span class="harmony-icon">◑</span>
+                        Contrast
+                    </button>
+                    <button class="harmony-btn" data-harmony="accessible">
+                        <span class="harmony-icon">♿</span>
+                        Accessible
+                    </button>
+                    <button class="harmony-btn" data-harmony="vibrant">
+                        <span class="harmony-icon">✦</span>
+                        Vibrant
+                    </button>
+                </div>
+            </div>
+
+            <!-- Generated Palette -->
+            <div class="palette-section">
+                <div class="palette-header">
+                    <div>
+                        <h2 class="palette-title">
+                            <span>✨</span> Your Palette
+                        </h2>
+                        <div class="palette-type-label" id="paletteTypeLabel">Complementary Colors</div>
+                    </div>
+                    <button class="btn-randomize" id="randomizeBtn">
+                        <span>🎲</span> Random
+                    </button>
+                </div>
+                <div class="palette-grid" id="paletteGrid">
+                    <!-- Color swatches will be generated here -->
+                </div>
+            </div>
+
+            <!-- Export Buttons -->
+            <div class="export-section">
+                <button class="btn-export primary" id="copyAllBtn">
+                    <span>📋</span> Copy All Hex
+                </button>
+                <button class="btn-export secondary" id="exportCssBtn">
+                    <span>🎯</span> Export CSS
+                </button>
+            </div><!-- Instructions -->
+            <div class="instructions">
+                <h3>📖 How to Use</h3>
+                <ul>
+                    <li><strong>Pick a color</strong> using the color wheel or enter a hex code</li>
+                    <li><strong>Choose a harmony</strong> type to generate different color relationships</li>
+                    <li><strong>Contrast/Accessible</strong> modes create WCAG-friendly text pairs</li>
+                    <li><strong>Click any swatch</strong> to copy its hex code</li>
+                    <li><strong>Export CSS</strong> to get ready-to-use CSS variables</li>
+                </ul>
+            </div>
+        </main>
+<!-- Footer -->
+        <footer>
+            <p>© 2026 Free Micro Web Tools. All tools are free to use.</p>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+            </div>
+        </footer>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">Copied!</div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ========== DOM References ==========
+            const colorPicker = document.getElementById('colorPicker');
+            const hexInput = document.getElementById('hexInput');
+            const paletteGrid = document.getElementById('paletteGrid');
+            const paletteTypeLabel = document.getElementById('paletteTypeLabel');
+            const harmonyBtns = document.querySelectorAll('.harmony-btn');
+            const randomizeBtn = document.getElementById('randomizeBtn');
+            const copyAllBtn = document.getElementById('copyAllBtn');
+            const exportCssBtn = document.getElementById('exportCssBtn');
+            const toast = document.getElementById('toast');
+
+            // Current state
+            let currentHarmony = 'complementary';
+            let currentPalette = [];
+
+            // Harmony descriptions
+            const harmonyLabels = {
+                complementary: 'Complementary (Opposites)',
+                analogous: 'Analogous Colors',
+                triadic: 'Triadic Colors',
+                split: 'Split-Complementary',
+                tetradic: 'Tetradic (Square)',
+                monochromatic: 'Monochromatic Shades',
+                contrast: 'High-Contrast Pairs',
+                accessible: 'Accessible (WCAG AA)',
+                vibrant: 'Vibrant Accents'
+            };
+
+            // Color role labels for each harmony
+            const colorLabels = {
+                complementary: ['Base', 'Opposite', 'Base Light', 'Opposite Light', 'Base Muted', 'Opposite Muted'],
+                analogous: ['Cool', 'Cool-Base', 'Base', 'Warm-Base', 'Warm', 'Neutral'],
+                triadic: ['Primary', 'Primary Light', 'Secondary', 'Secondary Light', 'Tertiary', 'Tertiary Light'],
+                split: ['Base', 'Base Light', 'Split 1', 'Split 1 Light', 'Split 2', 'Split 2 Light'],
+                tetradic: ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Neutral 1', 'Neutral 2'],
+                monochromatic: ['Darkest', 'Dark', 'Base', 'Light', 'Lighter', 'Lightest'],
+                contrast: ['Dark BG', 'Light Text', 'Light BG', 'Dark Text', 'Accent BG', 'Accent Text'],
+                accessible: ['Text Dark', 'BG Light', 'Text on Dark', 'BG Dark', 'Link Color', 'Link Hover'],
+                vibrant: ['Base', 'Vibrant 1', 'Vibrant 2', 'Vibrant 3', 'Dark', 'Light']
+            };
+
+            // ========== Color Conversion Utilities ==========
+
+            function hexToRgb(hex) {
+                const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : { r: 0, g: 0, b: 0 };
+            }
+
+            function rgbToHex(r, g, b) {
+                return '#' + [r, g, b].map(x => {
+                    const hex = Math.round(Math.max(0, Math.min(255, x))).toString(16);
+                    return hex.length === 1 ? '0' + hex : hex;
+                }).join('');
+            }
+
+            function rgbToHsl(r, g, b) {
+                r /= 255; g /= 255; b /= 255;
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0;
+                } else {
+                    const d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                        case g: h = ((b - r) / d + 2) / 6; break;
+                        case b: h = ((r - g) / d + 4) / 6; break;
+                    }
+                }
+                return { h: h * 360, s: s * 100, l: l * 100 };
+            }
+
+            function hslToRgb(h, s, l) {
+                h /= 360; s /= 100; l /= 100;
+                let r, g, b;
+                if (s === 0) {
+                    r = g = b = l;
+                } else {
+                    const hue2rgb = (p, q, t) => {
+                        if (t < 0) t += 1;
+                        if (t > 1) t -= 1;
+                        if (t < 1/6) return p + (q - p) * 6 * t;
+                        if (t < 1/2) return q;
+                        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                        return p;
+                    };
+                    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                    const p = 2 * l - q;
+                    r = hue2rgb(p, q, h + 1/3);
+                    g = hue2rgb(p, q, h);
+                    b = hue2rgb(p, q, h - 1/3);
+                }
+                return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+            }
+
+            function hexToHsl(hex) {
+                const rgb = hexToRgb(hex);
+                return rgbToHsl(rgb.r, rgb.g, rgb.b);
+            }
+
+            function hslToHex(h, s, l) {
+                const rgb = hslToRgb(h, s, l);
+                return rgbToHex(rgb.r, rgb.g, rgb.b);
+            }
+
+            function normalizeHue(hue) {
+                return ((hue % 360) + 360) % 360;
+            }
+
+            // ========== Contrast Calculation (WCAG) ==========
+
+            function getLuminance(r, g, b) {
+                const [rs, gs, bs] = [r, g, b].map(c => {
+                    c /= 255;
+                    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+                });
+                return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+            }
+
+            function getContrastRatio(hex1, hex2) {
+                const rgb1 = hexToRgb(hex1);
+                const rgb2 = hexToRgb(hex2);
+                const l1 = getLuminance(rgb1.r, rgb1.g, rgb1.b);
+                const l2 = getLuminance(rgb2.r, rgb2.g, rgb2.b);
+                const lighter = Math.max(l1, l2);
+                const darker = Math.min(l1, l2);
+                return (lighter + 0.05) / (darker + 0.05);
+            }
+
+            function meetsWCAG_AA(hex1, hex2) {
+                return getContrastRatio(hex1, hex2) >= 4.5;
+            }
+
+            function meetsWCAG_AAA(hex1, hex2) {
+                return getContrastRatio(hex1, hex2) >= 7;
+            }
+
+            // ========== Palette Generation ==========
+
+            function generateComplementary(hsl) {
+                // True complement uses 180° hue rotation (e.g., green→red, blue→orange)
+                const complementHue = normalizeHue(hsl.h + 180);
+                return [
+                    hslToHex(hsl.h, hsl.s, hsl.l),                                           // Base
+                    hslToHex(complementHue, hsl.s, hsl.l),                                   // Opposite (TRUE 180° complement)
+                    hslToHex(hsl.h, hsl.s * 0.75, Math.min(hsl.l + 15, 88)),                // Base Light
+                    hslToHex(complementHue, hsl.s * 0.75, Math.min(hsl.l + 15, 88)),        // Opposite Light
+                    hslToHex(hsl.h, hsl.s * 0.5, Math.min(hsl.l + 25, 92)),                 // Base Muted
+                    hslToHex(complementHue, hsl.s * 0.5, Math.min(hsl.l + 25, 92))          // Opposite Muted
+                ];
+            }
+
+            function generateAnalogous(hsl) {
+                return [
+                    hslToHex(normalizeHue(hsl.h - 30), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h - 15), hsl.s, hsl.l),
+                    hslToHex(hsl.h, hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 15), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 30), hsl.s, hsl.l),
+                    hslToHex(hsl.h, hsl.s * 0.6, Math.min(hsl.l + 25, 92))
+                ];
+            }
+
+            function generateTriadic(hsl) {
+                return [
+                    hslToHex(hsl.h, hsl.s, hsl.l),
+                    hslToHex(hsl.h, hsl.s * 0.6, Math.min(hsl.l + 20, 90)),
+                    hslToHex(normalizeHue(hsl.h + 120), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 120), hsl.s * 0.6, Math.min(hsl.l + 20, 90)),
+                    hslToHex(normalizeHue(hsl.h + 240), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 240), hsl.s * 0.6, Math.min(hsl.l + 20, 90))
+                ];
+            }
+
+            function generateSplitComplementary(hsl) {
+                return [
+                    hslToHex(hsl.h, hsl.s, hsl.l),
+                    hslToHex(hsl.h, hsl.s * 0.5, Math.min(hsl.l + 25, 92)),
+                    hslToHex(normalizeHue(hsl.h + 150), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 150), hsl.s * 0.7, Math.min(hsl.l + 15, 88)),
+                    hslToHex(normalizeHue(hsl.h + 210), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 210), hsl.s * 0.7, Math.min(hsl.l + 15, 88))
+                ];
+            }
+
+            function generateTetradic(hsl) {
+                return [
+                    hslToHex(hsl.h, hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 90), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 180), hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 270), hsl.s, hsl.l),
+                    hslToHex(hsl.h, hsl.s * 0.5, Math.min(hsl.l + 25, 92)),
+                    hslToHex(normalizeHue(hsl.h + 180), hsl.s * 0.5, Math.min(hsl.l + 25, 92))
+                ];
+            }
+
+            function generateMonochromatic(hsl) {
+                return [
+                    hslToHex(hsl.h, hsl.s, Math.max(hsl.l - 30, 10)),
+                    hslToHex(hsl.h, hsl.s, Math.max(hsl.l - 15, 20)),
+                    hslToHex(hsl.h, hsl.s, hsl.l),
+                    hslToHex(hsl.h, hsl.s * 0.8, Math.min(hsl.l + 15, 85)),
+                    hslToHex(hsl.h, hsl.s * 0.6, Math.min(hsl.l + 25, 90)),
+                    hslToHex(hsl.h, hsl.s * 0.4, Math.min(hsl.l + 35, 95))
+                ];
+            }
+
+            function generateContrast(hsl) {
+                // High-contrast pairs for readability
+                const darkBg = hslToHex(hsl.h, hsl.s * 0.8, 15);
+                const lightText = hslToHex(hsl.h, hsl.s * 0.1, 95);
+                const lightBg = hslToHex(hsl.h, hsl.s * 0.15, 97);
+                const darkText = hslToHex(hsl.h, hsl.s * 0.8, 15);
+                const accentBg = hslToHex(hsl.h, hsl.s, Math.max(hsl.l, 45));
+                const accentText = hsl.l > 50 ? hslToHex(hsl.h, hsl.s * 0.9, 10) : hslToHex(hsl.h, hsl.s * 0.1, 98);
+                
+                return [darkBg, lightText, lightBg, darkText, accentBg, accentText];
+            }
+
+            function generateAccessible(hsl) {
+                // WCAG AA compliant pairs
+                const textDark = hslToHex(hsl.h, hsl.s * 0.7, 20);
+                const bgLight = hslToHex(hsl.h, hsl.s * 0.1, 98);
+                const textOnDark = hslToHex(hsl.h, hsl.s * 0.15, 95);
+                const bgDark = hslToHex(hsl.h, hsl.s * 0.6, 25);
+                
+                // Calculate link colors that pass AA
+                let linkColor = hslToHex(hsl.h, Math.min(hsl.s * 1.2, 100), 35);
+                let linkHover = hslToHex(hsl.h, Math.min(hsl.s * 1.3, 100), 25);
+                
+                return [textDark, bgLight, textOnDark, bgDark, linkColor, linkHover];
+            }
+
+            function generateVibrant(hsl) {
+                // Highly saturated, vibrant colors
+                const maxSat = Math.min(hsl.s * 1.3, 100);
+                return [
+                    hslToHex(hsl.h, hsl.s, hsl.l),
+                    hslToHex(normalizeHue(hsl.h + 30), maxSat, 55),
+                    hslToHex(normalizeHue(hsl.h + 60), maxSat, 50),
+                    hslToHex(normalizeHue(hsl.h - 30), maxSat, 55),
+                    hslToHex(hsl.h, hsl.s * 0.8, 20),
+                    hslToHex(hsl.h, hsl.s * 0.3, 95)
+                ];
+            }
+
+            function generatePalette(hex, harmony) {
+                const hsl = hexToHsl(hex);
+                switch (harmony) {
+                    case 'complementary': return generateComplementary(hsl);
+                    case 'analogous': return generateAnalogous(hsl);
+                    case 'triadic': return generateTriadic(hsl);
+                    case 'split': return generateSplitComplementary(hsl);
+                    case 'tetradic': return generateTetradic(hsl);
+                    case 'monochromatic': return generateMonochromatic(hsl);
+                    case 'contrast': return generateContrast(hsl);
+                    case 'accessible': return generateAccessible(hsl);
+                    case 'vibrant': return generateVibrant(hsl);
+                    default: return generateComplementary(hsl);
+                }
+            }
+
+            // ========== UI Functions ==========
+
+            function isLightColor(hex) {
+                const rgb = hexToRgb(hex);
+                const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+                return luminance > 0.5;
+            }
+
+            function renderPalette(colors) {
+                currentPalette = colors;
+                paletteGrid.innerHTML = '';
+                paletteTypeLabel.textContent = harmonyLabels[currentHarmony];
+
+                const labels = colorLabels[currentHarmony] || [];
+                const showContrast = currentHarmony === 'contrast' || currentHarmony === 'accessible';
+
+                colors.forEach((hex, index) => {
+                    const rgb = hexToRgb(hex);
+                    const label = labels[index] || `Color ${index + 1}`;
+
+                    const swatch = document.createElement('div');
+                    swatch.className = 'color-swatch';
+
+                    let contrastInfo = '';
+                    if (showContrast && index % 2 === 1) {
+                        const pairColor = colors[index - 1];
+                        const ratio = getContrastRatio(hex, pairColor).toFixed(2);
+                        const passes = meetsWCAG_AA(hex, pairColor);
+                        contrastInfo = `<div class="swatch-contrast ${passes ? 'pass' : 'fail'}">${ratio}:1 ${passes ? '✓ AA' : '✗'}</div>`;
+                    }
+
+                    swatch.innerHTML = `
+                        <div class="swatch-color" style="background-color: ${hex}"></div>
+                        <div class="swatch-info">
+                            <div>
+                                <div class="swatch-label">${label}</div>
+                                <div class="swatch-hex">${hex.toUpperCase()}</div>
+                                <div class="swatch-rgb">RGB(${rgb.r}, ${rgb.g}, ${rgb.b})</div>
+                                ${contrastInfo}
+                            </div>
+                            <button class="swatch-copy" data-color="${hex}">Copy</button>
+                        </div>
+                    `;
+
+                    swatch.querySelector('.swatch-copy').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        copyToClipboard(hex.toUpperCase());
+                    });
+
+                    swatch.addEventListener('click', () => copyToClipboard(hex.toUpperCase()));
+                    paletteGrid.appendChild(swatch);
+                });
+            }
+
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => toast.classList.remove('show'), 2000);
+            }
+
+            async function copyToClipboard(text) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showToast(`✓ Copied: ${text}`);
+                } catch (err) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showToast(`✓ Copied: ${text}`);
+                }
+            }
+
+            function getRandomColor() {
+                return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            }
+
+            function isValidHex(hex) {
+                return /^#?([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hex);
+            }
+
+            function updatePalette() {
+                const hex = colorPicker.value;
+                const palette = generatePalette(hex, currentHarmony);
+                renderPalette(palette);
+            }
+
+            // ========== Event Listeners ==========
+
+            colorPicker.addEventListener('input', (e) => {
+                hexInput.value = e.target.value.toUpperCase();
+                updatePalette();
+            });
+
+            hexInput.addEventListener('input', (e) => {
+                let value = e.target.value;
+                if (!value.startsWith('#')) value = '#' + value;
+                if (isValidHex(value)) {
+                    colorPicker.value = value;
+                    updatePalette();
+                }
+            });
+
+            hexInput.addEventListener('blur', (e) => {
+                let value = e.target.value;
+                if (!value.startsWith('#')) value = '#' + value;
+                if (isValidHex(value)) {
+                    e.target.value = value.toUpperCase();
+                } else {
+                    e.target.value = colorPicker.value.toUpperCase();
+                }
+            });
+
+            harmonyBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    harmonyBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentHarmony = btn.dataset.harmony;
+                    updatePalette();
+                });
+            });
+
+            randomizeBtn.addEventListener('click', () => {
+                const randomColor = getRandomColor();
+                colorPicker.value = randomColor;
+                hexInput.value = randomColor.toUpperCase();
+                updatePalette();
+            });
+
+            copyAllBtn.addEventListener('click', () => {
+                const hexCodes = currentPalette.map(c => c.toUpperCase()).join(', ');
+                copyToClipboard(hexCodes);
+            });
+
+            exportCssBtn.addEventListener('click', () => {
+                const labels = colorLabels[currentHarmony] || [];
+                const cssVars = currentPalette.map((hex, i) => {
+                    const label = labels[i] ? labels[i].toLowerCase().replace(/\s+/g, '-') : `color-${i + 1}`;
+                    return `  --${label}: ${hex.toUpperCase()};`;
+                }).join('\n');
+                const css = `:root {\n${cssVars}\n}`;
+                copyToClipboard(css);
+                showToast('✓ CSS variables copied!');
+            });
+
+            // Initialize
+            updatePalette();
+        })();
+    </script>
+
+    <!-- GA4 Event Tracking -->
+    <script>
+        (function() {
+            // Track tool page landing
+            gtag('event', 'tool_landed', {
+                'tool_name': 'Color Palette Generator'
+            });
+            
+            // Track tool usage
+            function trackToolUsed(inputCount, customValuesUsed, resultGenerated) {
+                gtag('event', 'tool_used', {
+                    'tool_name': 'Color Palette Generator',
+                    'input_count': inputCount || 0,
+                    'custom_values_used': customValuesUsed || false,
+                    'result_generated': resultGenerated || false
+                });
+            }
+            
+            // Expose tracking function globally for this tool
+            window.trackToolUsed = trackToolUsed;
+        })();
+    </script>
+</body>
+</html>
