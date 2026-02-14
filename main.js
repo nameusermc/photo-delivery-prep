@@ -9,6 +9,7 @@ const JPEG_EXTENSIONS = ['.jpg', '.jpeg'];
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.tiff', '.tif', '.webp', '.bmp', '.gif', '.heic', '.heif'];
 const RAW_EXTENSIONS = ['.cr2', '.cr3', '.nef', '.arw', '.dng', '.orf', '.raf', '.rw2'];
 const VIDEO_EXTENSIONS = ['.mp4', '.mov', '.avi', '.mkv', '.wmv', '.webm'];
+const RENDERABLE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.bmp', '.gif'];
 const ALL_EXTENSIONS = [...IMAGE_EXTENSIONS, ...RAW_EXTENSIONS, ...VIDEO_EXTENSIONS];
 
 // Initialize Paddle Billing
@@ -77,6 +78,11 @@ function getFileCategory(file) {
     if (RAW_EXTENSIONS.includes(ext)) return 'raw';
     if (VIDEO_EXTENSIONS.includes(ext)) return 'video';
     return 'other';
+}
+
+function isRenderable(file) {
+    const ext = getFileExtension(file.name);
+    return RENDERABLE_EXTENSIONS.includes(ext);
 }
 
 function getNewFilename(index, startNum, prefix, originalFilename) {
@@ -174,6 +180,196 @@ async function removeMetadata(file) {
         };
         reader.readAsDataURL(file);
     });
+}
+
+// --- Resize function (canvas API) ---
+
+function loadImage(file) {
+    return new Promise(function(resolve, reject) {
+        var img = new Image();
+        img.onload = function() { resolve(img); };
+        img.onerror = function() { reject(new Error('Failed to load image: ' + file.name)); };
+        img.src = URL.createObjectURL(file);
+    });
+}
+
+async function resizeImage(fileOrBlob, maxLongEdge, jpegQuality) {
+    var img = new Image();
+    await new Promise(function(resolve, reject) {
+        img.onload = function() { resolve(); };
+        img.onerror = function() { reject(new Error('Failed to load image for resize')); };
+        img.src = URL.createObjectURL(fileOrBlob);
+    });
+
+    var w = img.naturalWidth;
+    var h = img.naturalHeight;
+
+    // Only downscale, never upscale
+    var longEdge = Math.max(w, h);
+    if (longEdge <= maxLongEdge) {
+        // Return as JPEG at the chosen quality without resizing
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        URL.revokeObjectURL(img.src);
+        return new Promise(function(resolve) {
+            canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', jpegQuality / 100);
+        });
+    }
+
+    var scale = maxLongEdge / longEdge;
+    var newW = Math.round(w * scale);
+    var newH = Math.round(h * scale);
+
+    var canvas = document.createElement('canvas');
+    canvas.width = newW;
+    canvas.height = newH;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, newW, newH);
+    URL.revokeObjectURL(img.src);
+
+    return new Promise(function(resolve) {
+        canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', jpegQuality / 100);
+    });
+}
+
+// --- Watermark function (canvas API) ---
+
+async function applyWatermark(fileOrBlob, watermarkText, position, opacity) {
+    var img = new Image();
+    await new Promise(function(resolve, reject) {
+        img.onload = function() { resolve(); };
+        img.onerror = function() { reject(new Error('Failed to load image for watermark')); };
+        img.src = URL.createObjectURL(fileOrBlob);
+    });
+
+    var w = img.naturalWidth;
+    var h = img.naturalHeight;
+
+    var canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    URL.revokeObjectURL(img.src);
+
+    ctx.globalAlpha = opacity / 100;
+    ctx.fillStyle = '#ffffff';
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 2;
+
+    if (position === 'center') {
+        // Large diagonal watermark across the entire image
+        var fontSize = Math.max(Math.min(w, h) * 0.06, 16);
+        ctx.font = 'bold ' + fontSize + 'px Arial, Helvetica, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        ctx.save();
+        ctx.translate(w / 2, h / 2);
+        ctx.rotate(-Math.atan2(h, w));
+
+        // Repeat the text to fill the diagonal
+        var diag = Math.sqrt(w * w + h * h);
+        var textWidth = ctx.measureText(watermarkText).width;
+        var spacing = textWidth + fontSize * 2;
+        var repeats = Math.ceil(diag / spacing) + 2;
+
+        for (var r = -repeats; r <= repeats; r++) {
+            for (var row = -3; row <= 3; row++) {
+                var x = r * spacing;
+                var y = row * fontSize * 3;
+                ctx.strokeText(watermarkText, x, y);
+                ctx.fillText(watermarkText, x, y);
+            }
+        }
+        ctx.restore();
+    } else {
+        // Corner watermark
+        var fontSize = Math.max(Math.min(w, h) * 0.035, 14);
+        ctx.font = fontSize + 'px Arial, Helvetica, sans-serif';
+
+        var padding = fontSize * 0.8;
+        var tx, ty;
+
+        if (position === 'bottom-right') {
+            ctx.textAlign = 'right';
+            tx = w - padding;
+            ty = h - padding;
+        } else if (position === 'bottom-left') {
+            ctx.textAlign = 'left';
+            tx = padding;
+            ty = h - padding;
+        } else if (position === 'top-right') {
+            ctx.textAlign = 'right';
+            tx = w - padding;
+            ty = padding + fontSize;
+        } else {
+            ctx.textAlign = 'left';
+            tx = padding;
+            ty = padding + fontSize;
+        }
+
+        ctx.lineWidth = 2;
+        ctx.strokeText(watermarkText, tx, ty);
+        ctx.fillText(watermarkText, tx, ty);
+    }
+
+    ctx.globalAlpha = 1.0;
+
+    // Determine output format — keep JPEG as JPEG, others become PNG
+    var ext = fileOrBlob.name ? getFileExtension(fileOrBlob.name) : '.jpg';
+    var mimeType = (ext === '.jpg' || ext === '.jpeg') ? 'image/jpeg' : 'image/png';
+    var quality = (mimeType === 'image/jpeg') ? 0.92 : undefined;
+
+    return new Promise(function(resolve) {
+        canvas.toBlob(function(blob) { resolve(blob); }, mimeType, quality);
+    });
+}
+
+// --- Delivery receipt generator ---
+
+function generateDeliveryReceipt(filenames, prefix, photographerName, clientName, notes) {
+    var lines = [];
+    lines.push('========================================');
+    lines.push('         DELIVERY RECEIPT');
+    lines.push('========================================');
+    lines.push('');
+    lines.push('Date:          ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
+    lines.push('Time:          ' + new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }));
+    if (photographerName) {
+        lines.push('Photographer:  ' + photographerName);
+    }
+    if (clientName) {
+        lines.push('Client:        ' + clientName);
+    }
+    lines.push('');
+    lines.push('Total files:   ' + filenames.length);
+    if (prefix) {
+        lines.push('Naming prefix: ' + prefix);
+    }
+    lines.push('');
+    lines.push('----------------------------------------');
+    lines.push('FILES INCLUDED:');
+    lines.push('----------------------------------------');
+    for (var i = 0; i < filenames.length; i++) {
+        lines.push('  ' + (i + 1).toString().padStart(3, ' ') + '. ' + filenames[i]);
+    }
+    lines.push('');
+    if (notes && notes.trim()) {
+        lines.push('----------------------------------------');
+        lines.push('NOTES:');
+        lines.push('----------------------------------------');
+        lines.push(notes.trim());
+        lines.push('');
+    }
+    lines.push('========================================');
+    lines.push('Generated by Photo Delivery Prep');
+    lines.push('https://photodeliveryprep.com');
+    lines.push('========================================');
+    return lines.join('\n');
 }
 
 // --- Display functions ---
@@ -370,6 +566,34 @@ document.getElementById('downloadBtn').addEventListener('click', async function(
     var removeGPS = document.getElementById('removeGPS').checked;
     var removeSerial = document.getElementById('removeSerial').checked;
 
+    // Delivery options
+    var doResize = document.getElementById('enableResize').checked;
+    var doWatermark = document.getElementById('enableWatermark').checked;
+    var doReceipt = document.getElementById('enableReceipt').checked;
+
+    var resizeLongEdge = 2048;
+    var jpegQuality = 80;
+    if (doResize) {
+        var preset = document.getElementById('resizePreset').value;
+        resizeLongEdge = preset === 'custom'
+            ? parseInt(document.getElementById('customSize').value) || 2048
+            : parseInt(preset);
+        jpegQuality = parseInt(document.getElementById('jpegQuality').value) || 80;
+    }
+
+    var watermarkText = '';
+    var watermarkPosition = 'center';
+    var watermarkOpacity = 30;
+    if (doWatermark) {
+        watermarkText = document.getElementById('watermarkText').value.trim();
+        watermarkPosition = document.getElementById('watermarkPosition').value;
+        watermarkOpacity = parseInt(document.getElementById('watermarkOpacity').value) || 30;
+        if (!watermarkText) {
+            alert('Please enter watermark text.');
+            return;
+        }
+    }
+
     var filesToProcess = isUnlocked() ? files : files.slice(0, FREE_LIMIT);
 
     // Show loading state
@@ -379,18 +603,47 @@ document.getElementById('downloadBtn').addEventListener('click', async function(
 
     try {
         var zip = new JSZip();
+        var allNewNames = [];
 
         for (var i = 0; i < filesToProcess.length; i++) {
             var file = filesToProcess[i];
             var newName = getNewFilename(i, startNum, prefix, file.name);
 
-            // Only strip EXIF from JPEGs
+            // Update progress
+            downloadBtn.textContent = 'Processing ' + (i + 1) + ' of ' + filesToProcess.length + '...';
+
+            var renderable = isRenderable(file);
+            var fileBlob = file;
+
+            // Step 1: EXIF removal (JPEG only, before any canvas processing)
             if (isJpeg(file) && (removeGPS || removeSerial)) {
-                var cleanedFile = await removeMetadata(file);
-                zip.file(newName, cleanedFile);
-            } else {
-                zip.file(newName, file);
+                fileBlob = await removeMetadata(file);
             }
+
+            // Step 2: Resize (renderable images only)
+            if (doResize && renderable) {
+                fileBlob = await resizeImage(fileBlob, resizeLongEdge, jpegQuality);
+                // Resized files become JPEG
+                var nameNoExt = newName.substring(0, newName.lastIndexOf('.'));
+                newName = nameNoExt + '.jpg';
+            }
+
+            // Step 3: Watermark (renderable images only)
+            if (doWatermark && watermarkText && renderable) {
+                fileBlob = await applyWatermark(fileBlob, watermarkText, watermarkPosition, watermarkOpacity);
+            }
+
+            allNewNames.push(newName);
+            zip.file(newName, fileBlob);
+        }
+
+        // Step 4: Delivery receipt
+        if (doReceipt) {
+            var photographerName = document.getElementById('receiptPhotographer').value.trim();
+            var clientName = document.getElementById('receiptClient').value.trim();
+            var receiptNotes = document.getElementById('receiptNotes').value.trim();
+            var receiptText = generateDeliveryReceipt(allNewNames, prefix, photographerName, clientName, receiptNotes);
+            zip.file('delivery-receipt.txt', receiptText);
         }
 
         var zipName = prefix ? prefix + '_delivery.zip' : 'delivery.zip';
@@ -420,3 +673,29 @@ clearBtn.addEventListener('click', function() {
     clearUI();
 });
 document.getElementById('uploadSection').appendChild(clearBtn);
+
+// --- Delivery options toggle handlers ---
+
+document.getElementById('enableResize').addEventListener('change', function() {
+    document.getElementById('resizeSettings').style.display = this.checked ? 'block' : 'none';
+});
+
+document.getElementById('resizePreset').addEventListener('change', function() {
+    document.getElementById('customSizeWrap').style.display = this.value === 'custom' ? 'block' : 'none';
+});
+
+document.getElementById('jpegQuality').addEventListener('input', function() {
+    document.getElementById('jpegQualityLabel').textContent = this.value + '%';
+});
+
+document.getElementById('enableWatermark').addEventListener('change', function() {
+    document.getElementById('watermarkSettings').style.display = this.checked ? 'block' : 'none';
+});
+
+document.getElementById('watermarkOpacity').addEventListener('input', function() {
+    document.getElementById('watermarkOpacityLabel').textContent = this.value + '%';
+});
+
+document.getElementById('enableReceipt').addEventListener('change', function() {
+    document.getElementById('receiptSettings').style.display = this.checked ? 'block' : 'none';
+});

@@ -1,145 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Homepage -->
   <url>
-    <loc>https://freemicrotools.app/</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://photodeliveryprep.com/</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Tool Pages -->
   <url>
-    <loc>https://freemicrotools.app/batch-image-resizer.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://photodeliveryprep.com/about.html</loc>
+    <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://freemicrotools.app/bill-splitter.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://photodeliveryprep.com/price.html</loc>
+    <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://freemicrotools.app/business-day-calculator.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/color-palette-generator.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/countdown-timer.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/credit-card-payoff.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/csv-line-combiner.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/exif-remover.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/filename-cleaner.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/headline-analyzer.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/invoice-generator.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/markdown-to-html.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/random-name-generator.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/roi-calculator.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/text-cleaner.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/tip-calculator.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/word-counter.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/working-hours-calculator.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Info / Legal Pages -->
-  <url>
-    <loc>https://freemicrotools.app/about.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://photodeliveryprep.com/privacy.html</loc>
+    <lastmod>2026-02-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://freemicrotools.app/contact.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://photodeliveryprep.com/terms.html</loc>
+    <lastmod>2026-02-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://freemicrotools.app/privacy.html</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://freemicrotools.app/terms.html</loc>
-    <lastmod>2026-02-14</lastmod>
+    <loc>https://photodeliveryprep.com/refunds.html</loc>
+    <lastmod>2026-02-12</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
