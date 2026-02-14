@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Delivery Prep — Rename, Clean &amp; ZIP Photos &amp; Videos for Client Delivery</title>
-    <meta name="description" content="Batch rename, strip EXIF metadata, and ZIP photos and videos for client delivery. Supports JPEG, PNG, TIFF, RAW, MP4, MOV and more. 100% browser-based — your files never leave your device.">
+    <title>Photo Delivery Prep — Rename, Resize, Watermark &amp; ZIP Photos for Client Delivery</title>
+    <meta name="description" content="Batch rename, resize, watermark, strip EXIF metadata, and ZIP photos and videos for client delivery. Includes delivery receipt. Supports JPEG, PNG, TIFF, RAW, MP4, MOV and more. 100% browser-based — your files never leave your device.">
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Photo Delivery Prep — Rename, Clean & ZIP Files for Client Delivery">
-    <meta property="og:description" content="Batch rename, strip EXIF metadata, and ZIP photos and videos for client delivery. Supports JPEG, PNG, TIFF, RAW, MP4, MOV and more. 100% browser-based.">
+    <meta property="og:title" content="Photo Delivery Prep — Rename, Resize, Watermark & ZIP Files for Client Delivery">
+    <meta property="og:description" content="Batch rename, resize, watermark, strip EXIF metadata, and ZIP photos and videos for client delivery. Includes delivery receipt. 100% browser-based.">
     <meta property="og:url" content="https://photodeliveryprep.com">
     <meta property="og:site_name" content="Photo Delivery Prep">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Photo Delivery Prep — Rename, Clean & ZIP Files for Client Delivery">
-    <meta name="twitter:description" content="Batch rename, strip EXIF metadata, and ZIP photos and videos for client delivery. 100% browser-based — your files never leave your device.">
+    <meta name="twitter:title" content="Photo Delivery Prep — Rename, Resize, Watermark & ZIP Files for Client Delivery">
+    <meta name="twitter:description" content="Batch rename, resize, watermark, strip EXIF metadata, and ZIP photos and videos for client delivery. 100% browser-based — your files never leave your device.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://photodeliveryprep.com/">
@@ -31,7 +31,7 @@
         "@type": "WebApplication",
         "name": "Photo Delivery Prep",
         "url": "https://photodeliveryprep.com",
-        "description": "Browser-based tool for photographers and videographers to batch rename, strip EXIF metadata, and package files into a ZIP for client delivery.",
+        "description": "Browser-based tool for photographers and videographers to batch rename, resize, watermark, strip EXIF metadata, and package files into a ZIP for client delivery.",
         "applicationCategory": "MultimediaApplication",
         "operatingSystem": "Any (browser-based)",
         "offers": {
@@ -60,14 +60,14 @@
 <body>
     <header>
         <h1>Photo Delivery Prep</h1>
-        <p>Rename, clean metadata, and package files for client delivery — all in your browser</p>
+        <p>Rename, resize, watermark, clean metadata, and package files for client delivery — all in your browser</p>
     </header>
     <main>
         <!-- Upload Section -->
         <section id="uploadSection">
             <label class="file-label">
                 Choose files
-                <input type="file" id="fileInput" accept="image/*,.cr2,.cr3,.nef,.arw,.dng,.orf,.raf,.rw2" multiple>
+                <input type="file" id="fileInput" accept="image/*,video/*,.cr2,.cr3,.nef,.arw,.dng,.orf,.raf,.rw2" multiple>
             </label>
             <p class="helper-text">Images, RAW files, and videos. Files are processed in filename order.</p>
         </section>
@@ -227,7 +227,7 @@
                     <p>MP4, MOV, AVI, MKV, WMV, WebM</p>
                 </div>
             </div>
-            <p class="helper-text">EXIF metadata preview and removal is available for JPEG files. All other formats are renamed and packaged as-is.</p>
+            <p class="helper-text">EXIF metadata preview and removal is available for JPEG files. Resize and watermark apply to browser-displayable images (JPEG, PNG, WebP, BMP, GIF). All other formats are renamed and packaged as-is.</p>
         </section>
 
         <!-- FAQ -->
@@ -239,7 +239,7 @@
                 <dt>What file types are supported?</dt>
                 <dd>JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC, common RAW formats (CR2, NEF, ARW, DNG, etc.), and video files (MP4, MOV, AVI, MKV, and more).</dd>
                 <dt>Does this affect image or video quality?</dt>
-                <dd>No. The tool only renames files and optionally strips EXIF metadata from JPEGs. Pixel data and video streams are never modified.</dd>
+                <dd>By default, no — the tool only renames files and optionally strips EXIF metadata. Pixel data and video streams are not modified. If you enable resize or watermark, those features re-encode affected images through the browser's canvas API. Your original files on disk are never changed.</dd>
                 <dt>Why not rename on export?</dt>
                 <dd>Client deliveries often change after export — selects get revised, sequences shift. This tool lets you adjust naming and strip metadata without re-exporting from Lightroom, Capture One, or your NLE.</dd>
                 <dt>Can I process RAW and video files?</dt>
@@ -272,6 +272,6 @@
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
-    <script src="main.js?v=5"></script>
+    <script src="main.js?v=6"></script>
 </body>
 </html>

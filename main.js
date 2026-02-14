@@ -146,187 +146,207 @@ function displayMetadata(file) {
 async function removeMetadata(file) {
     return new Promise(function(resolve) {
         var reader = new FileReader();
+        reader.onerror = function() {
+            console.warn('Failed to read file for EXIF removal:', file.name);
+            resolve(file); // Fallback: return original
+        };
         reader.onload = function(e) {
-            var dataUrl = e.target.result;
-            var exifObj = piexif.load(dataUrl);
+            try {
+                var dataUrl = e.target.result;
+                var exifObj = piexif.load(dataUrl);
 
-            if (document.getElementById('removeGPS').checked) {
-                delete exifObj['GPS'];
-            }
-
-            if (document.getElementById('removeSerial').checked) {
-                if (exifObj['Exif']) {
-                    delete exifObj['Exif'][piexif.ExifIFD.BodySerialNumber];
-                    delete exifObj['Exif'][piexif.ExifIFD.CameraOwnerName];
-                    delete exifObj['Exif'][piexif.ExifIFD.LensSerialNumber];
+                if (document.getElementById('removeGPS').checked) {
+                    delete exifObj['GPS'];
                 }
-                if (exifObj['0th']) {
-                    delete exifObj['0th'][piexif.ImageIFD.Software];
+
+                if (document.getElementById('removeSerial').checked) {
+                    if (exifObj['Exif']) {
+                        delete exifObj['Exif'][piexif.ExifIFD.BodySerialNumber];
+                        delete exifObj['Exif'][piexif.ExifIFD.CameraOwnerName];
+                        delete exifObj['Exif'][piexif.ExifIFD.LensSerialNumber];
+                    }
+                    if (exifObj['0th']) {
+                        delete exifObj['0th'][piexif.ImageIFD.Software];
+                    }
                 }
+
+                var exifBytes = piexif.dump(exifObj);
+                var newDataUrl = piexif.insert(exifBytes, dataUrl);
+
+                var arr = newDataUrl.split(',');
+                var bstr = atob(arr[1]);
+                var n = bstr.length;
+                var u8arr = new Uint8Array(n);
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+
+                resolve(new Blob([u8arr], { type: 'image/jpeg' }));
+            } catch (err) {
+                console.warn('EXIF removal failed for', file.name, '— including original:', err);
+                resolve(file); // Fallback: return original
             }
-
-            var exifBytes = piexif.dump(exifObj);
-            var newDataUrl = piexif.insert(exifBytes, dataUrl);
-
-            var arr = newDataUrl.split(',');
-            var bstr = atob(arr[1]);
-            var n = bstr.length;
-            var u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-
-            resolve(new Blob([u8arr], { type: 'image/jpeg' }));
         };
         reader.readAsDataURL(file);
     });
 }
 
 // --- Resize function (canvas API) ---
+async function resizeImage(fileOrBlob, maxLongEdge, jpegQuality) {
+    var objectUrl = URL.createObjectURL(fileOrBlob);
+    var img = new Image();
 
-function loadImage(file) {
-    return new Promise(function(resolve, reject) {
-        var img = new Image();
-        img.onload = function() { resolve(img); };
-        img.onerror = function() { reject(new Error('Failed to load image: ' + file.name)); };
-        img.src = URL.createObjectURL(file);
-    });
+    try {
+        await new Promise(function(resolve, reject) {
+            img.onload = function() { resolve(); };
+            img.onerror = function() { reject(new Error('Failed to load image for resize')); };
+            img.src = objectUrl;
+        });
+
+        var w = img.naturalWidth;
+        var h = img.naturalHeight;
+        var longEdge = Math.max(w, h);
+
+        // Calculate target dimensions (only downscale, never upscale)
+        var newW = w;
+        var newH = h;
+        if (longEdge > maxLongEdge) {
+            var scale = maxLongEdge / longEdge;
+            newW = Math.round(w * scale);
+            newH = Math.round(h * scale);
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = newW;
+        canvas.height = newH;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, newW, newH);
+
+        return await new Promise(function(resolve, reject) {
+            canvas.toBlob(function(blob) {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error('Canvas toBlob returned null during resize'));
+                }
+            }, 'image/jpeg', jpegQuality / 100);
+        });
+    } finally {
+        URL.revokeObjectURL(objectUrl);
+    }
 }
 
-async function resizeImage(fileOrBlob, maxLongEdge, jpegQuality) {
+// --- Watermark function (canvas API) ---
+
+async function applyWatermark(fileOrBlob, watermarkText, position, opacity, jpegQuality) {
+    var objectUrl = URL.createObjectURL(fileOrBlob);
     var img = new Image();
-    await new Promise(function(resolve, reject) {
-        img.onload = function() { resolve(); };
-        img.onerror = function() { reject(new Error('Failed to load image for resize')); };
-        img.src = URL.createObjectURL(fileOrBlob);
-    });
 
-    var w = img.naturalWidth;
-    var h = img.naturalHeight;
+    try {
+        await new Promise(function(resolve, reject) {
+            img.onload = function() { resolve(); };
+            img.onerror = function() { reject(new Error('Failed to load image for watermark')); };
+            img.src = objectUrl;
+        });
 
-    // Only downscale, never upscale
-    var longEdge = Math.max(w, h);
-    if (longEdge <= maxLongEdge) {
-        // Return as JPEG at the chosen quality without resizing
+        var w = img.naturalWidth;
+        var h = img.naturalHeight;
+
         var canvas = document.createElement('canvas');
         canvas.width = w;
         canvas.height = h;
         var ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0);
-        URL.revokeObjectURL(img.src);
-        return new Promise(function(resolve) {
-            canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', jpegQuality / 100);
-        });
-    }
 
-    var scale = maxLongEdge / longEdge;
-    var newW = Math.round(w * scale);
-    var newH = Math.round(h * scale);
-
-    var canvas = document.createElement('canvas');
-    canvas.width = newW;
-    canvas.height = newH;
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0, newW, newH);
-    URL.revokeObjectURL(img.src);
-
-    return new Promise(function(resolve) {
-        canvas.toBlob(function(blob) { resolve(blob); }, 'image/jpeg', jpegQuality / 100);
-    });
-}
-
-// --- Watermark function (canvas API) ---
-
-async function applyWatermark(fileOrBlob, watermarkText, position, opacity) {
-    var img = new Image();
-    await new Promise(function(resolve, reject) {
-        img.onload = function() { resolve(); };
-        img.onerror = function() { reject(new Error('Failed to load image for watermark')); };
-        img.src = URL.createObjectURL(fileOrBlob);
-    });
-
-    var w = img.naturalWidth;
-    var h = img.naturalHeight;
-
-    var canvas = document.createElement('canvas');
-    canvas.width = w;
-    canvas.height = h;
-    var ctx = canvas.getContext('2d');
-    ctx.drawImage(img, 0, 0);
-    URL.revokeObjectURL(img.src);
-
-    ctx.globalAlpha = opacity / 100;
-    ctx.fillStyle = '#ffffff';
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 2;
-
-    if (position === 'center') {
-        // Large diagonal watermark across the entire image
-        var fontSize = Math.max(Math.min(w, h) * 0.06, 16);
-        ctx.font = 'bold ' + fontSize + 'px Arial, Helvetica, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-
-        ctx.save();
-        ctx.translate(w / 2, h / 2);
-        ctx.rotate(-Math.atan2(h, w));
-
-        // Repeat the text to fill the diagonal
-        var diag = Math.sqrt(w * w + h * h);
-        var textWidth = ctx.measureText(watermarkText).width;
-        var spacing = textWidth + fontSize * 2;
-        var repeats = Math.ceil(diag / spacing) + 2;
-
-        for (var r = -repeats; r <= repeats; r++) {
-            for (var row = -3; row <= 3; row++) {
-                var x = r * spacing;
-                var y = row * fontSize * 3;
-                ctx.strokeText(watermarkText, x, y);
-                ctx.fillText(watermarkText, x, y);
-            }
-        }
-        ctx.restore();
-    } else {
-        // Corner watermark
-        var fontSize = Math.max(Math.min(w, h) * 0.035, 14);
-        ctx.font = fontSize + 'px Arial, Helvetica, sans-serif';
-
-        var padding = fontSize * 0.8;
-        var tx, ty;
-
-        if (position === 'bottom-right') {
-            ctx.textAlign = 'right';
-            tx = w - padding;
-            ty = h - padding;
-        } else if (position === 'bottom-left') {
-            ctx.textAlign = 'left';
-            tx = padding;
-            ty = h - padding;
-        } else if (position === 'top-right') {
-            ctx.textAlign = 'right';
-            tx = w - padding;
-            ty = padding + fontSize;
-        } else {
-            ctx.textAlign = 'left';
-            tx = padding;
-            ty = padding + fontSize;
-        }
-
+        ctx.globalAlpha = opacity / 100;
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#000000';
         ctx.lineWidth = 2;
-        ctx.strokeText(watermarkText, tx, ty);
-        ctx.fillText(watermarkText, tx, ty);
+
+        if (position === 'center') {
+            // Large diagonal watermark tiled across the entire image
+            var fontSize = Math.max(Math.min(w, h) * 0.06, 16);
+            ctx.font = 'bold ' + fontSize + 'px Arial, Helvetica, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            ctx.save();
+            ctx.translate(w / 2, h / 2);
+            ctx.rotate(-Math.atan2(h, w));
+
+            var diag = Math.sqrt(w * w + h * h);
+            var textWidth = ctx.measureText(watermarkText).width;
+            var spacing = textWidth + fontSize * 2;
+            var repeats = Math.ceil(diag / spacing) + 2;
+
+            for (var r = -repeats; r <= repeats; r++) {
+                for (var row = -3; row <= 3; row++) {
+                    var x = r * spacing;
+                    var y = row * fontSize * 3;
+                    ctx.strokeText(watermarkText, x, y);
+                    ctx.fillText(watermarkText, x, y);
+                }
+            }
+            ctx.restore();
+        } else {
+            // Corner watermark
+            var fontSize = Math.max(Math.min(w, h) * 0.035, 14);
+            ctx.font = fontSize + 'px Arial, Helvetica, sans-serif';
+
+            var padding = fontSize * 0.8;
+            var tx, ty;
+
+            if (position === 'bottom-right') {
+                ctx.textAlign = 'right';
+                tx = w - padding;
+                ty = h - padding;
+            } else if (position === 'bottom-left') {
+                ctx.textAlign = 'left';
+                tx = padding;
+                ty = h - padding;
+            } else if (position === 'top-right') {
+                ctx.textAlign = 'right';
+                tx = w - padding;
+                ty = padding + fontSize;
+            } else {
+                ctx.textAlign = 'left';
+                tx = padding;
+                ty = padding + fontSize;
+            }
+
+            ctx.lineWidth = 2;
+            ctx.strokeText(watermarkText, tx, ty);
+            ctx.fillText(watermarkText, tx, ty);
+        }
+
+        ctx.globalAlpha = 1.0;
+
+        // Determine output format — keep JPEG as JPEG, others become PNG
+        var isJpegInput = false;
+        if (fileOrBlob.name) {
+            var ext = getFileExtension(fileOrBlob.name);
+            isJpegInput = (ext === '.jpg' || ext === '.jpeg');
+        } else {
+            // Blob without name (from resize or EXIF strip) — check MIME type
+            isJpegInput = (fileOrBlob.type === 'image/jpeg');
+        }
+
+        var mimeType = isJpegInput ? 'image/jpeg' : 'image/png';
+        // Use caller's JPEG quality if provided, otherwise default to 92%
+        var quality = isJpegInput ? (jpegQuality ? jpegQuality / 100 : 0.92) : undefined;
+
+        return await new Promise(function(resolve, reject) {
+            canvas.toBlob(function(blob) {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error('Canvas toBlob returned null during watermark'));
+                }
+            }, mimeType, quality);
+        });
+    } finally {
+        URL.revokeObjectURL(objectUrl);
     }
-
-    ctx.globalAlpha = 1.0;
-
-    // Determine output format — keep JPEG as JPEG, others become PNG
-    var ext = fileOrBlob.name ? getFileExtension(fileOrBlob.name) : '.jpg';
-    var mimeType = (ext === '.jpg' || ext === '.jpeg') ? 'image/jpeg' : 'image/png';
-    var quality = (mimeType === 'image/jpeg') ? 0.92 : undefined;
-
-    return new Promise(function(resolve) {
-        canvas.toBlob(function(blob) { resolve(blob); }, mimeType, quality);
-    });
 }
 
 // --- Delivery receipt generator ---
@@ -601,6 +621,8 @@ document.getElementById('downloadBtn').addEventListener('click', async function(
     downloadBtn.textContent = 'Processing files...';
     downloadBtn.disabled = true;
 
+    var failedFiles = [];
+
     try {
         var zip = new JSZip();
         var allNewNames = [];
@@ -615,22 +637,30 @@ document.getElementById('downloadBtn').addEventListener('click', async function(
             var renderable = isRenderable(file);
             var fileBlob = file;
 
-            // Step 1: EXIF removal (JPEG only, before any canvas processing)
-            if (isJpeg(file) && (removeGPS || removeSerial)) {
-                fileBlob = await removeMetadata(file);
-            }
+            try {
+                // Step 1: EXIF removal (JPEG only, before any canvas processing)
+                if (isJpeg(file) && (removeGPS || removeSerial)) {
+                    fileBlob = await removeMetadata(file);
+                }
 
-            // Step 2: Resize (renderable images only)
-            if (doResize && renderable) {
-                fileBlob = await resizeImage(fileBlob, resizeLongEdge, jpegQuality);
-                // Resized files become JPEG
-                var nameNoExt = newName.substring(0, newName.lastIndexOf('.'));
-                newName = nameNoExt + '.jpg';
-            }
+                // Step 2: Resize (renderable images only)
+                if (doResize && renderable) {
+                    fileBlob = await resizeImage(fileBlob, resizeLongEdge, jpegQuality);
+                    // Resized files become JPEG — update extension
+                    var nameNoExt = newName.substring(0, newName.lastIndexOf('.'));
+                    newName = nameNoExt + '.jpg';
+                }
 
-            // Step 3: Watermark (renderable images only)
-            if (doWatermark && watermarkText && renderable) {
-                fileBlob = await applyWatermark(fileBlob, watermarkText, watermarkPosition, watermarkOpacity);
+                // Step 3: Watermark (renderable images only)
+                // Pass jpegQuality so watermark uses the same quality as resize
+                if (doWatermark && watermarkText && renderable) {
+                    fileBlob = await applyWatermark(fileBlob, watermarkText, watermarkPosition, watermarkOpacity, doResize ? jpegQuality : null);
+                }
+            } catch (fileError) {
+                // If processing fails for this file, include the original untouched
+                console.warn('Processing failed for', file.name, '— including original:', fileError);
+                fileBlob = file;
+                failedFiles.push(file.name);
             }
 
             allNewNames.push(newName);
@@ -652,6 +682,12 @@ document.getElementById('downloadBtn').addEventListener('click', async function(
         link.href = URL.createObjectURL(blob);
         link.download = zipName;
         link.click();
+        URL.revokeObjectURL(link.href);
+
+        // Notify about any files that fell back to originals
+        if (failedFiles.length > 0) {
+            alert(failedFiles.length + ' file(s) could not be processed and were included as originals: ' + failedFiles.join(', '));
+        }
     } catch (error) {
         console.error('ZIP generation error:', error);
         alert('An error occurred while generating the ZIP. Please try again.');
