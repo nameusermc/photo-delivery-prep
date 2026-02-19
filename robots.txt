@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://photodeliveryprep.com/sitemap.xml
