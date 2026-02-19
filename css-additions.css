@@ -1,0 +1,82 @@
+/* ========================================
+   DELIVERY OPTIONS — append to style.css
+   ======================================== */
+
+/* Delivery Options section */
+#deliveryOptions {
+    margin: 16px 0;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+#deliveryOptions h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* Option groups */
+.option-group {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.option-group:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* Sub-options (revealed on checkbox toggle) */
+.sub-options {
+    margin-top: 8px;
+    padding-left: 24px;
+}
+
+.sub-options label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.sub-options input[type="text"],
+.sub-options input[type="number"],
+.sub-options select,
+.sub-options textarea {
+    display: block;
+    margin-top: 4px;
+    padding: 6px 8px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    color: inherit;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.sub-options textarea {
+    max-width: 400px;
+    resize: vertical;
+}
+
+.sub-options select {
+    cursor: pointer;
+}
+
+/* Range slider styling */
+.sub-options input[type="range"] {
+    display: inline-block;
+    width: 150px;
+    vertical-align: middle;
+    margin: 0 8px;
+}
+
+.sub-options span {
+    font-size: 13px;
+    opacity: 0.8;
+}

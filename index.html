@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Delivery Prep — Rename, Resize, Watermark &amp; ZIP Photos for Client Delivery</title>
+    <meta name="description" content="Batch rename, resize, watermark, strip EXIF metadata, and ZIP photos and videos for client delivery. Includes delivery receipt. Supports JPEG, PNG, TIFF, RAW, MP4, MOV and more. 100% browser-based — your files never leave your device.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Photo Delivery Prep — Rename, Resize, Watermark & ZIP Files for Client Delivery">
+    <meta property="og:description" content="Batch rename, resize, watermark, strip EXIF metadata, and ZIP photos and videos for client delivery. Includes delivery receipt. 100% browser-based.">
+    <meta property="og:url" content="https://photodeliveryprep.com">
+    <meta property="og:site_name" content="Photo Delivery Prep">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Photo Delivery Prep — Rename, Resize, Watermark & ZIP Files for Client Delivery">
+    <meta name="twitter:description" content="Batch rename, resize, watermark, strip EXIF metadata, and ZIP photos and videos for client delivery. 100% browser-based — your files never leave your device.">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://photodeliveryprep.com/">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Photo Delivery Prep",
+        "url": "https://photodeliveryprep.com",
+        "description": "Browser-based tool for photographers and videographers to batch rename, resize, watermark, strip EXIF metadata, and package files into a ZIP for client delivery.",
+        "applicationCategory": "MultimediaApplication",
+        "operatingSystem": "Any (browser-based)",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "description": "Free for up to 10 files. One-time $9.99 payment for unlimited."
+        },
+        "featureList": [
+            "Batch file renaming with custom prefix and numbering",
+            "EXIF metadata preview and removal for JPEG files",
+            "GPS data stripping",
+            "Camera serial number removal",
+            "Image resizing with preset and custom dimensions",
+            "Text watermark overlay for proof images",
+            "Delivery receipt with file manifest",
+            "ZIP packaging for client delivery",
+            "Support for JPEG, PNG, TIFF, RAW, and video files",
+            "100% client-side processing — files never uploaded"
+        ]
+    }
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Photo Delivery Prep</h1>
+        <p>Rename, resize, watermark, clean metadata, and package files for client delivery — all in your browser</p>
+    </header>
+    <main>
+        <!-- Upload Section -->
+        <section id="uploadSection">
+            <label class="file-label">
+                Choose files
+                <input type="file" id="fileInput" accept="image/*,video/*,.cr2,.cr3,.nef,.arw,.dng,.orf,.raf,.rw2" multiple>
+            </label>
+            <p class="helper-text">Images, RAW files, and videos. Files are processed in filename order.</p>
+        </section>
+
+        <!-- Action Buttons Section -->
+        <section id="actionButtons">
+            <div id="limitMessage"></div>
+            <button id="downloadBtn">Download ZIP</button>
+        </section>
+
+        <!-- Rename Section -->
+        <section id="renameSection">
+            <label>Filename prefix (optional):
+                <input type="text" id="filenamePrefix" placeholder="Optional prefix">
+            </label>
+            <label>Starting number:
+                <input type="number" id="startNum" value="1" min="1">
+            </label>
+            <div id="exifOptions">
+                <label><input type="checkbox" id="removeGPS"> Remove GPS data <span class="helper-text">(JPEG only)</span></label>
+                <label><input type="checkbox" id="removeSerial"> Remove camera serial &amp; software tags <span class="helper-text">(JPEG only)</span></label>
+            </div>
+        </section>
+
+        <!-- Delivery Options Section -->
+        <section id="deliveryOptions">
+            <h3>Delivery Options</h3>
+
+            <!-- Resize -->
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="enableResize"> Resize images
+                    <span class="helper-text">(JPEG, PNG, WebP, BMP, GIF only)</span>
+                </label>
+                <div id="resizeSettings" class="sub-options" style="display:none;">
+                    <label>
+                        Long edge (px):
+                        <select id="resizePreset">
+                            <option value="2048">2048 — web / social</option>
+                            <option value="1600">1600 — email / light web</option>
+                            <option value="1200">1200 — small web</option>
+                            <option value="3000">3000 — high-res web</option>
+                            <option value="custom">Custom…</option>
+                        </select>
+                    </label>
+                    <div id="customSizeWrap" style="display:none;">
+                        <label>Custom long edge (px):
+                            <input type="number" id="customSize" value="2048" min="100" max="10000">
+                        </label>
+                    </div>
+                    <label>
+                        JPEG quality:
+                        <input type="range" id="jpegQuality" min="10" max="100" value="80">
+                        <span id="jpegQualityLabel">80%</span>
+                    </label>
+                    <p class="helper-text">Images larger than the target are scaled down. Smaller images are left as-is. Resized images are saved as JPEG.</p>
+                </div>
+            </div>
+
+            <!-- Watermark -->
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="enableWatermark"> Add watermark
+                    <span class="helper-text">(JPEG, PNG, WebP, BMP, GIF only)</span>
+                </label>
+                <div id="watermarkSettings" class="sub-options" style="display:none;">
+                    <label>Watermark text:
+                        <input type="text" id="watermarkText" placeholder="© Your Name" maxlength="100">
+                    </label>
+                    <label>
+                        Position:
+                        <select id="watermarkPosition">
+                            <option value="center">Center (large, diagonal)</option>
+                            <option value="bottom-right">Bottom right</option>
+                            <option value="bottom-left">Bottom left</option>
+                            <option value="top-right">Top right</option>
+                            <option value="top-left">Top left</option>
+                        </select>
+                    </label>
+                    <label>
+                        Opacity:
+                        <input type="range" id="watermarkOpacity" min="5" max="80" value="30">
+                        <span id="watermarkOpacityLabel">30%</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Delivery Receipt -->
+            <div class="option-group">
+                <label>
+                    <input type="checkbox" id="enableReceipt"> Include delivery receipt
+                </label>
+                <div id="receiptSettings" class="sub-options" style="display:none;">
+                    <label>Photographer / studio name:
+                        <input type="text" id="receiptPhotographer" placeholder="Your name or studio">
+                    </label>
+                    <label>Client name (optional):
+                        <input type="text" id="receiptClient" placeholder="Client name">
+                    </label>
+                    <label>Notes (optional):
+                        <textarea id="receiptNotes" rows="2" placeholder="Additional notes for the delivery…"></textarea>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- File List & Metadata Section -->
+        <section id="metadataSection">
+            <div id="fileList"></div>
+            <div id="metadata"></div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="howItWorks">
+            <h2>How It Works</h2>
+            <ol>
+                <li><strong>Select your files</strong> — drag or choose JPEGs, PNGs, TIFFs, RAW files, or videos from your computer.</li>
+                <li><strong>Set a naming scheme</strong> — add an optional prefix and choose a starting number. The tool renumbers files in alphabetical order.</li>
+                <li><strong>Choose metadata options</strong> — for JPEG files, you can strip GPS coordinates, camera serial numbers, and software tags before delivery.</li>
+                <li><strong>Set delivery options</strong> — optionally resize images for web, add a watermark to proofs, or include a delivery receipt with the file manifest.</li>
+                <li><strong>Download the ZIP</strong> — one click produces a ready-to-send package with your renamed (and optionally processed) files.</li>
+            </ol>
+            <p>Everything runs locally in your browser using JavaScript. Your files are never uploaded to a server.</p>
+        </section>
+
+        <!-- Features -->
+        <section id="featuresSection">
+            <h2>Features</h2>
+            <ul>
+                <li>Batch rename and renumber files after export with an optional prefix</li>
+                <li>Supports JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC, RAW (CR2, NEF, ARW, DNG, and more), and video (MP4, MOV, AVI, MKV)</li>
+                <li>Preview EXIF metadata on JPEG files — capture date, camera model, copyright, GPS, serial numbers, and software tags</li>
+                <li>Strip sensitive EXIF data (GPS, serial numbers, software tags) from JPEGs without altering image pixels</li>
+                <li>Resize images for web delivery — preset sizes or custom long-edge dimensions with adjustable JPEG quality</li>
+                <li>Add a text watermark to proof images — configurable position, opacity, and diagonal center overlay</li>
+                <li>Include a delivery receipt in the ZIP — filename manifest, file count, date, and optional photographer/client info</li>
+                <li>Package everything into a ready-to-send ZIP</li>
+                <li>Free tier processes up to 10 files — unlock unlimited with a one-time $9.99 payment</li>
+                <li>100% client-side — your files are never uploaded or stored on a server</li>
+            </ul>
+        </section>
+
+        <!-- Supported Formats -->
+        <section id="formatsSection">
+            <h2>Supported File Formats</h2>
+            <div class="formats-grid">
+                <div>
+                    <h3>Images</h3>
+                    <p>JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC / HEIF</p>
+                </div>
+                <div>
+                    <h3>RAW Files</h3>
+                    <p>Canon CR2 / CR3, Nikon NEF, Sony ARW, Adobe DNG, Olympus ORF, Fuji RAF, Panasonic RW2</p>
+                </div>
+                <div>
+                    <h3>Video</h3>
+                    <p>MP4, MOV, AVI, MKV, WMV, WebM</p>
+                </div>
+            </div>
+            <p class="helper-text">EXIF metadata preview and removal is available for JPEG files. Resize and watermark apply to browser-displayable images (JPEG, PNG, WebP, BMP, GIF). All other formats are renamed and packaged as-is.</p>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faqSection">
+            <h2>FAQ</h2>
+            <dl>
+                <dt>Do my files get uploaded?</dt>
+                <dd>No. All processing happens locally in your browser. Your files never leave your device.</dd>
+                <dt>What file types are supported?</dt>
+                <dd>JPEG, PNG, TIFF, WebP, BMP, GIF, HEIC, common RAW formats (CR2, NEF, ARW, DNG, etc.), and video files (MP4, MOV, AVI, MKV, and more).</dd>
+                <dt>Does this affect image or video quality?</dt>
+                <dd>By default, no — the tool only renames files and optionally strips EXIF metadata. Pixel data and video streams are not modified. If you enable resize or watermark, those features re-encode affected images through the browser's canvas API. Your original files on disk are never changed.</dd>
+                <dt>Why not rename on export?</dt>
+                <dd>Client deliveries often change after export — selects get revised, sequences shift. This tool lets you adjust naming and strip metadata without re-exporting from Lightroom, Capture One, or your NLE.</dd>
+                <dt>Can I process RAW and video files?</dt>
+                <dd>Yes. RAW and video files are renamed and packaged into the ZIP. EXIF metadata stripping is only available for JPEG files since RAW and video formats use proprietary metadata structures.</dd>
+                <dt>What does "Unlock Unlimited" mean?</dt>
+                <dd>Free users can process up to 10 files per batch. A one-time $9.99 payment removes this limit permanently. No subscription, no account required.</dd>
+                <dt>I already paid but my unlock is gone. What do I do?</dt>
+                <dd>Your unlock is stored in your browser. If you cleared your browser data or switched devices, use the "Restore Purchase" link that appears when you hit the free limit. Enter the email you used at checkout and your unlock will be restored.</dd>
+                <dt>Does resizing affect my original files?</dt>
+                <dd>No. Resizing creates new copies at the target size inside the ZIP. Your original files on disk are never modified. Resized images are saved as JPEG at your chosen quality level.</dd>
+                <dt>Can I watermark RAW or video files?</dt>
+                <dd>Watermarking and resizing apply to browser-displayable image formats (JPEG, PNG, WebP, BMP, GIF). RAW and video files are renamed and packaged as-is — they pass through untouched.</dd>
+                <dt>What's in the delivery receipt?</dt>
+                <dd>A text file included in the ZIP containing the delivery date, file count, a list of all filenames, and optional photographer/client info you provide. It serves as a record of what was delivered.</dd>
+            </dl>
+        </section>
+    </main>
+
+    <footer>
+        <p>Photo Delivery Prep &copy; 2026 — All processing takes place locally in your browser. No files are uploaded or stored on a server.</p>
+        <p>
+            <a href="about.html">About</a> &middot;
+            <a href="privacy.html">Privacy</a> &middot;
+            <a href="terms.html">Terms</a> &middot;
+            <a href="refunds.html">Refunds</a> &middot;
+            <a href="price.html">Pricing</a>
+        </p>
+    </footer>
+
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
+    <script src="main.js?v=6"></script>
+</body>
+</html>
